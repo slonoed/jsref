@@ -14,8 +14,9 @@ It uses babylon parser to parse and generate JavaScript.
 Tested with [vim-lsc][vim-lsc] on MacOS.
 
 Alternatives considered
-[js-refactor][js-refactor] — refactoring plugin for VScode. Works only with VSCode
-[graspjs][grasp] — grep-like refactoring util. Does't have editor integrations.
+
+* [js-refactor][js-refactor] — refactoring plugin for VScode. Works only with VSCode
+* [graspjs][grasp] — grep-like refactoring util. Does't have editor integrations.
 
 [js-refactor]: https://github.com/cmstead/js-refactor/blob/master/package.json
 [babylon]: https://github.com/babel/babel/tree/master/packages/babylon
