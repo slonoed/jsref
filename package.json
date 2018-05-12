@@ -1,0 +1,53 @@
+{
+  "name": "@slonoed/jsref",
+  "description": "JavaScript refactoring language server",
+  "version": "0.5.0",
+  "main": "lib/index.js",
+  "license": "WTFPL",
+  "repository": "https://github.com/slonoed/jsref",
+  "bin": {
+    "jsref": "./lib/bin/cli.js"
+  },
+  "scripts": {
+    "flow-watch": "fswatch -o ./src/ | xargs -n1 -I{} sh -c 'clear; printf \"\\033[3J\" && flow'",
+    "test-watch": "jest --watch src",
+    "build-watch": "babel --watch -d lib src"
+  },
+  "dependencies": {
+    "babel-generator": "^6.26.1",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-stage-1": "^6.24.1",
+    "babel-template": "^6.26.0",
+    "babel-types": "^6.26.0",
+    "babylon": "^6.18.0",
+    "babylon-walk": "^1.0.2",
+    "log4js": "^2.6.0",
+    "semver": "^5.5.0",
+    "temp": "0.8.3",
+    "through": "2.3.8",
+    "vscode-jsonrpc": "^3.6.1",
+    "vscode-languageserver": "^4.1.2",
+    "vscode-languageserver-types": "^3.3.0",
+    "vscode-uri": "^1.0.1",
+    "yargs": "^11.0.0"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-eslint": "^8.2.3",
+    "babel-jest": "^22.4.3",
+    "eslint": "^4.19.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-babel": "^5.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-prettier": "^2.1.2",
+    "eslint-plugin-rulesdir": "^0.1.0",
+    "flow-bin": "^0.72.0",
+    "jest": "^22.4.3",
+    "prettier": "^1.11.0",
+    "sinon": "^5.0.7"
+  }
+}
