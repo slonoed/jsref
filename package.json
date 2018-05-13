@@ -10,7 +10,8 @@
   },
   "scripts": {
     "flow-watch": "fswatch -o ./src/ | xargs -n1 -I{} sh -c 'clear; printf \"\\033[3J\" && flow'",
-    "test": "npx jest src",
+     "lint": "npx eslint src",
+    "test": "npm run lint && npx jest src",
     "test-watch": "npx jest --watch src",
     "build": "npx babel -d lib src",
     "build-watch": "npx babel --watch -d lib src"
