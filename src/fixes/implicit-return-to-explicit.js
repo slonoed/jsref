@@ -54,7 +54,7 @@ export default class ImplicitReturnToExplicit implements Fixer {
         BODY: node.body,
       }
 
-      const newCode = this.ast.replaceNode(node, code, template, args)
+      const newCode = this.ast.replaceNode(node, code, template, args).replace(/;$/, '')
 
       return createReplacementEdit(location.uri, node, newCode)
     }

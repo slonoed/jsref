@@ -23,9 +23,7 @@ test('should transform with explicit return', () => {
   const code = `const foo = () => 1`
   const edit = mock.edit(0, code, 0, 15)
 
-  const expected = `function f() {
-  return 1;
-}`
+  const expected = `function f() { return 1; }`
 
   expect(edit).toEqual({
     changes: {
@@ -43,9 +41,7 @@ test('should transform with body', () => {
   const code = `const foo = () => { return 1 }`
   const edit = mock.edit(0, code, 0, 15)
 
-  const expected = `function f() {
-  return 1;
-}`
+  const expected = `function f() {return 1;}`
 
   expect(edit).toEqual({
     changes: {

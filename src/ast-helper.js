@@ -41,7 +41,11 @@ export default class AstHelper {
   replaceNode(node: Node, fileContent: string, template: string, args: {[string]: string}): string {
     const tpl = babelTemplate(template)
     const ast = tpl(args)
-    const replacement = babelGenerate(ast, {}, fileContent.slice(node.start, node.end))
+    const replacement = babelGenerate(
+      ast,
+      {retainLines: true, compact: false},
+      fileContent.slice(node.start, node.end)
+    )
 
     return replacement.code
   }

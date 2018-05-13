@@ -33,8 +33,7 @@ test('should suggest fix on internal function', () => {
 })
 
 test('should create simple edit', () => {
-  const code = `function hello() {
-}`
+  const code = `function hello() {}`
   const edit = mock.edit(0, code, 0, 3)
 
   expect(edit).toEqual({
@@ -42,7 +41,7 @@ test('should create simple edit', () => {
       'file://testfile.js': [
         {
           newText: 'const hello = () => {};',
-          range: {end: {character: 1, line: 1}, start: {character: 0, line: 0}},
+          range: {end: {character: 19, line: 0}, start: {character: 0, line: 0}},
         },
       ],
     },
