@@ -9,6 +9,8 @@ import type AstHelper from '../ast-helper'
 
 import {getLogger} from 'log4js'
 
+import {createReplacementEdit} from './utils'
+
 export default class FunctionToArrow implements Fixer {
   type: string
   ds: DocumentStorage
@@ -47,29 +49,13 @@ export default class FunctionToArrow implements Fixer {
     const node = nodes.find(n => n.type === 'FunctionDeclaration')
 
     if (node) {
-      const {
-        loc: {start, end},
-      } = node
-
       const arrowTemplate = 'const NAME = () => BODY'
       const newCode = this.ast.replaceNode(node, code, arrowTemplate, {
         NAME: node.id,
         BODY: node.body,
       })
 
-      return {
-        changes: {
-          [location.uri]: [
-            {
-              range: {
-                start: this.ast.locToPos(start),
-                end: this.ast.locToPos(end),
-              },
-              newText: newCode,
-            },
-          ],
-        },
-      }
+      return createReplacementEdit(location.uri, node, newCode)
     }
   }
 }

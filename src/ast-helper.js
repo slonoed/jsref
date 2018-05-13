@@ -4,6 +4,7 @@ import type {
   ILocation,
   ITextDocumentIdentifier,
   IPosition,
+  IRange,
 } from 'vscode-languageserver-types'
 import type {Node, File, Location} from 'babylon-types'
 import type {Logger} from 'log4js'
@@ -35,10 +36,6 @@ export default class AstHelper {
   logger: Logger
   constructor(logger: Logger) {
     this.logger = logger
-  }
-  // pos 0 pased, loc 1 based
-  locToPos(loc: Location): IPosition {
-    return {line: loc.line - 1, character: loc.column}
   }
 
   replaceNode(node: Node, fileContent: string, template: string, args: {[string]: string}): string {

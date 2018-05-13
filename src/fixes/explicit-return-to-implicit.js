@@ -9,6 +9,8 @@ import type AstHelper from '../ast-helper'
 
 import {getLogger} from 'log4js'
 
+import {createReplacementEdit} from './utils'
+
 export default class ExplicitReturnToImplicit implements Fixer {
   type: string
   ds: DocumentStorage
@@ -52,32 +54,14 @@ export default class ExplicitReturnToImplicit implements Fixer {
     const node = nodes.find(n => n.type === 'ArrowFunctionExpression')
 
     if (node) {
-      const {
-        loc: {start, end},
-      } = node
-
-      let template
-      let args
-      template = `() => EXP`
-      args = {
+      const template = `() => EXP`
+      const args = {
         EXP: node.body.body[0].argument,
       }
 
       const newCode = this.ast.replaceNode(node, code, template, args)
 
-      return {
-        changes: {
-          [location.uri]: [
-            {
-              range: {
-                start: this.ast.locToPos(start),
-                end: this.ast.locToPos(end),
-              },
-              newText: newCode,
-            },
-          ],
-        },
-      }
+      return createReplacementEdit(location.uri, node, newCode)
     }
   }
 }
