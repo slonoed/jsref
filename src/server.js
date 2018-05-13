@@ -24,8 +24,6 @@ import {getLogger} from 'log4js'
 import DocumentStorage from './document-storage'
 import AstHelper from './ast-helper'
 import fixersClasses from './fixes'
-import FunctionToArrow from './fixes/function-to-arrow'
-import ArrowToFunction from './fixes/arrow-to-function'
 
 export default class Server {
   connection: IConnection
