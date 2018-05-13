@@ -38,3 +38,30 @@ test('find function identifier', () => {
   const nodes = getNodes(code, 0, 1)
   expect(nodes[0].type).toBe('FunctionDeclaration')
 })
+
+test('find function identifier in module', () => {
+  const code = `import test from 'jest'
+function hello() {
+}`
+
+  const nodes = getNodes(code, 1, 1)
+  expect(nodes[0].type).toBe('FunctionDeclaration')
+})
+
+test('find let in destructurization', () => {
+  const code = `function foo({prop}) { }`
+  const nodes = getNodes(code, 0, 4)
+  expect(nodes[0].type).toBe('FunctionDeclaration')
+})
+
+test('find function with rest', () => {
+  const code = `function foo(...props) { }`
+  const nodes = getNodes(code, 0, 4)
+  expect(nodes[0].type).toBe('FunctionDeclaration')
+})
+
+test('find function with object rest-spread', () => {
+  const code = `function foo({first, ...rest}) { }`
+  const nodes = getNodes(code, 0, 4)
+  expect(nodes[0].type).toBe('FunctionDeclaration')
+})

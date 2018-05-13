@@ -14,6 +14,23 @@ import babelGenerate from 'babel-generator'
 
 import * as babelTypes from 'babel-types'
 
+const plugins = [
+  'asyncGenerators',
+  'classProperties',
+  'decorators',
+  'doExpressions',
+  'exportExtensions',
+  'flow',
+  'functionSent',
+  'functionBind',
+  'jsx',
+  'objectRestSpread',
+  'dynamicImport',
+  'numericSeparator',
+  'optionalChaining',
+  'optionalCatchBinding',
+]
+
 export default class AstHelper {
   logger: Logger
   constructor(logger: Logger) {
@@ -33,7 +50,7 @@ export default class AstHelper {
   }
 
   findNodes(code: string, location: ILocation): Node[] {
-    const ast = parse(code)
+    const ast = parse(code, {sourceType: 'module', plugins})
     let nodes = []
     let ancestors = []
 

@@ -10,8 +10,10 @@
   },
   "scripts": {
     "flow-watch": "fswatch -o ./src/ | xargs -n1 -I{} sh -c 'clear; printf \"\\033[3J\" && flow'",
-    "test-watch": "jest --watch src",
-    "build-watch": "babel --watch -d lib src"
+    "test": "npx jest src",
+    "test-watch": "npx jest --watch src",
+    "build": "npx babel -d lib src",
+    "build-watch": "npx babel --watch -d lib src"
   },
   "dependencies": {
     "babel-generator": "^6.26.1",
