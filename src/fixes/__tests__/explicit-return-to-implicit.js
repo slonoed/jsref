@@ -49,7 +49,7 @@ test('should convert body', () => {
   const code = `const foo = () => {return 1;}`
   const edit = mock.edit(0, code, 0, 15)
 
-  const expected = `() => 1;`
+  const expected = `() => 1`
 
   const change = Object.values(edit.changes)[0]
   expect(change).toEqual([

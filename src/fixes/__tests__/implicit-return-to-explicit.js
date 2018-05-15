@@ -30,7 +30,9 @@ test('should create body with return', () => {
   const code = `const foo = () => 1;`
   const edit = mock.edit(0, code, 0, 15)
 
-  const expected = `() => {return 1;}`
+  const expected = `() => {
+  return 1
+}`
 
   const change = Object.values(edit.changes)[0]
   expect(change).toEqual([
@@ -45,7 +47,9 @@ test('should work inside expression', () => {
   const code = `console.log(() => 1);`
   const edit = mock.edit(0, code, 0, 15)
 
-  const expected = `() => {return 1;}`
+  const expected = `() => {
+  return 1
+}`
 
   const change = Object.values(edit.changes)[0]
   expect(change).toEqual([

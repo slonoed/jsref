@@ -12,6 +12,7 @@ import type {Logger} from 'log4js'
 import {parse} from 'babylon'
 import babelTemplate from 'babel-template'
 import babelGenerate from 'babel-generator'
+import prettier from 'prettier'
 
 import * as babelTypes from 'babel-types'
 
@@ -47,7 +48,16 @@ export default class AstHelper {
       fileContent.slice(node.start, node.end)
     )
 
-    return replacement.code
+    let formatted = prettier.format(replacement.code, {
+      semi: false,
+      singleQuote: true,
+    })
+
+    if (ast.type === 'ExpressionStatement' && formatted.charAt(0) === ';') {
+      formatted = formatted.slice(1)
+    }
+
+    return formatted.trim()
   }
 
   parseCode(code: string): Node {

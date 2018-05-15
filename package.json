@@ -10,7 +10,7 @@
   },
   "scripts": {
     "flow-watch": "fswatch -o ./src/ | xargs -n1 -I{} sh -c 'clear; printf \"\\033[3J\" && flow'",
-     "lint": "npx eslint src",
+    "lint": "npx eslint src",
     "test": "npm run lint && npx jest src",
     "test-watch": "npx jest --watch src",
     "build": "npx babel -d lib src",
@@ -50,7 +50,7 @@
     "eslint-plugin-rulesdir": "^0.1.0",
     "flow-bin": "^0.72.0",
     "jest": "^22.4.3",
-    "prettier": "^1.11.0",
+    "prettier": "^1.12.1",
     "sinon": "^5.0.7"
   }
 }

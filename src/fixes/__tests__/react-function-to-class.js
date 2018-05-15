@@ -33,8 +33,12 @@ function Page(props) {
 `
   const edit = mock.edit(0, code, 3, 4)
 
-  const expected = `class Page extends React.Component {render() {const props = this.props;
-    return <div>{props.title}</div>;}}`
+  const expected = `class Page extends React.Component {
+  render() {
+    const props = this.props
+    return <div>{props.title}</div>
+  }
+}`
 
   const change = Object.values(edit.changes)[0]
   expect(change).toEqual([

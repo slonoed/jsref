@@ -40,7 +40,7 @@ test('should create simple edit', () => {
     changes: {
       'file://testfile.js': [
         {
-          newText: 'const hello = () => {};',
+          newText: 'const hello = () => {}',
           range: {end: {character: 19, line: 0}, start: {character: 0, line: 0}},
         },
       ],
