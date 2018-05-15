@@ -138,3 +138,28 @@ test('should not use const name if expression', () => {
     },
   })
 })
+
+test('should replace declaration', () => {
+  const code = `import React from 'react'
+
+const Page = () => {
+  return <div>{test}</div>
+}
+`
+  const edit = mock.edit(0, code, 3, 15)
+
+  const expected = `function Page() {
+  return <div>{test}</div>
+}`
+
+  expect(edit).toEqual({
+    changes: {
+      'file://testfile.js': [
+        {
+          newText: expected,
+          range: {end: {character: 1, line: 4}, start: {character: 0, line: 2}},
+        },
+      ],
+    },
+  })
+})
