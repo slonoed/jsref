@@ -80,13 +80,14 @@ export default class ReactFunctionToClass implements Fixer {
     if (node) {
       const arrowTemplate = `class ${node.id.name} extends React.Component {
   render() {
-    const props = this.props
+    const PARAM = this.props
     BODY
   }
 }`
       const newCode = this.ast
         .replaceNode(node, code, arrowTemplate, {
           BODY: node.body.body,
+          PARAM: node.params[0],
         })
         .replace(/\n+/g, '\n')
 
