@@ -7,9 +7,12 @@ import type {Fixer, FixerOptions} from '../types'
 import type DocumentStorage from '../document-storage'
 import type AstHelper from '../ast-helper'
 
+import * as t from 'babel-types'
 import {getLogger} from 'log4js'
 
 import {createReplacementEdit} from './utils'
+
+const DEFAULT_NAME = 'replace_me_name'
 
 export default class ArrowToFunction implements Fixer {
   type: string
@@ -49,29 +52,30 @@ export default class ArrowToFunction implements Fixer {
     const node = nodes.find(n => n.type === 'ArrowFunctionExpression')
 
     if (node) {
-      let template
-      let args
+      const index = nodes.indexOf(node)
+      const parent = nodes[index + 1]
+
+      const isDeclaration = parent.type === 'VariableDeclarator' && parent.init === node
+      const name = isDeclaration ? parent.id : t.identifier(DEFAULT_NAME)
+
+      const args: {[string]: Node} = {PARAMS: node.params, NAME: name}
+
+      let template = '(function NAME(PARAMS) {'
+
       if (node.body.type === 'BlockStatement') {
-        template = `
-        function f(PARAMS) {
-          BODY
-        }
-        `
-        args = {
-          BODY: node.body.body,
-          PARAMS: node.params,
-        }
+        template += ' BODY '
+        args.BODY = node.body.body
       } else {
-        template = `function f(PARAMS) { return BODY }`
-        args = {
-          BODY: node.body,
-          PARAMS: node.params,
-        }
+        template += 'return BODY'
+        args.BODY = node.body
       }
 
-      const newCode = this.ast.replaceNode(node, code, template, args)
+      template += '})'
 
-      return createReplacementEdit(location.uri, node, newCode)
+      const nodeToReplace = isDeclaration ? nodes[index + 2] : node
+      const newCode = this.ast.replaceNode(nodeToReplace, code, template, args)
+
+      return createReplacementEdit(location.uri, nodeToReplace, newCode)
     }
   }
 }

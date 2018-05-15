@@ -23,7 +23,7 @@ test('should transform with explicit return', () => {
   const code = `const foo = () => 1`
   const edit = mock.edit(0, code, 0, 15)
 
-  const expected = `function f() {
+  const expected = `function foo() {
   return 1
 }`
 
@@ -32,7 +32,7 @@ test('should transform with explicit return', () => {
       'file://testfile.js': [
         {
           newText: expected,
-          range: {end: {character: 19, line: 0}, start: {character: 12, line: 0}},
+          range: {end: {character: 19, line: 0}, start: {character: 0, line: 0}},
         },
       ],
     },
@@ -43,7 +43,7 @@ test('should transform with body', () => {
   const code = `const foo = () => { return 1 }`
   const edit = mock.edit(0, code, 0, 15)
 
-  const expected = `function f() {
+  const expected = `function foo() {
   return 1
 }`
 
@@ -52,7 +52,7 @@ test('should transform with body', () => {
       'file://testfile.js': [
         {
           newText: expected,
-          range: {end: {character: 30, line: 0}, start: {character: 12, line: 0}},
+          range: {end: {character: 30, line: 0}, start: {character: 0, line: 0}},
         },
       ],
     },
@@ -63,7 +63,7 @@ test('should copy param', () => {
   const code = `const foo = (a) => { return a }`
   const edit = mock.edit(0, code, 0, 15)
 
-  const expected = `function f(a) {
+  const expected = `function foo(a) {
   return a
 }`
 
@@ -72,7 +72,7 @@ test('should copy param', () => {
       'file://testfile.js': [
         {
           newText: expected,
-          range: {end: {character: 31, line: 0}, start: {character: 12, line: 0}},
+          range: {end: {character: 31, line: 0}, start: {character: 0, line: 0}},
         },
       ],
     },
@@ -83,7 +83,7 @@ test('should copy params', () => {
   const code = `const foo = (a, {title = 1}) => { return a }`
   const edit = mock.edit(0, code, 0, 15)
 
-  const expected = `function f(a, { title = 1 }) {
+  const expected = `function foo(a, { title = 1 }) {
   return a
 }`
 
@@ -92,7 +92,47 @@ test('should copy params', () => {
       'file://testfile.js': [
         {
           newText: expected,
-          range: {end: {character: 44, line: 0}, start: {character: 12, line: 0}},
+          range: {end: {character: 44, line: 0}, start: {character: 0, line: 0}},
+        },
+      ],
+    },
+  })
+})
+
+test('should use const name', () => {
+  const code = `const foo = () => 1`
+  const edit = mock.edit(0, code, 0, 15)
+
+  const expected = `function foo() {
+  return 1
+}`
+
+  expect(edit).toEqual({
+    changes: {
+      'file://testfile.js': [
+        {
+          newText: expected,
+          range: {end: {character: 19, line: 0}, start: {character: 0, line: 0}},
+        },
+      ],
+    },
+  })
+})
+
+test('should not use const name if expression', () => {
+  const code = `console.log(() => 1)`
+  const edit = mock.edit(0, code, 0, 15)
+
+  const expected = `function replace_me_name() {
+  return 1
+}`
+
+  expect(edit).toEqual({
+    changes: {
+      'file://testfile.js': [
+        {
+          newText: expected,
+          range: {end: {character: 19, line: 0}, start: {character: 12, line: 0}},
         },
       ],
     },

@@ -39,7 +39,7 @@ export default class AstHelper {
     this.logger = logger
   }
 
-  replaceNode(node: Node, fileContent: string, template: string, args: {[string]: string}): string {
+  replaceNode(node: Node, fileContent: string, template: string, args: {[string]: Node}): string {
     const tpl = babelTemplate(template)
     const ast = tpl(args)
     const replacement = babelGenerate(
