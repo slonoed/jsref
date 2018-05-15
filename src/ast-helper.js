@@ -50,8 +50,13 @@ export default class AstHelper {
     return replacement.code
   }
 
-  findNodes(code: string, location: ILocation): Node[] {
+  parseCode(code: string): Node {
     const ast = parse(code, {sourceType: 'module', plugins})
+    return ast
+  }
+
+  findNodes(code: string, location: ILocation): Node[] {
+    const ast = this.parseCode(code)
     let nodes = []
     let ancestors = []
 
