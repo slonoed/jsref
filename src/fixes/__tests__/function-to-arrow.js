@@ -47,3 +47,12 @@ test('should create simple edit', () => {
     },
   })
 })
+
+test('should copy params', () => {
+  const code = `function hello({params, title = 1}, ...rest) {}`
+  const edit = mock.edit(0, code, 0, 3)
+
+  expect(edit.changes['file://testfile.js'][0].newText).toBe(
+    'const hello = ({ params, title = 1 }, ...rest) => {}'
+  )
+})

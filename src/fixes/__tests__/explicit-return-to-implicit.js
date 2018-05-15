@@ -59,3 +59,18 @@ test('should convert body', () => {
     },
   ])
 })
+
+test('should copy params convert body', () => {
+  const code = `const foo = (a) => {return a;}`
+  const edit = mock.edit(0, code, 0, 15)
+
+  const expected = `a => a`
+
+  const change = Object.values(edit.changes)[0]
+  expect(change).toEqual([
+    {
+      newText: expected,
+      range: {start: {line: 0, character: 12}, end: {line: 0, character: 30}},
+    },
+  ])
+})

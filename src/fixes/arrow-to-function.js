@@ -53,17 +53,19 @@ export default class ArrowToFunction implements Fixer {
       let args
       if (node.body.type === 'BlockStatement') {
         template = `
-        function f() {
+        function f(PARAMS) {
           BODY
         }
         `
         args = {
           BODY: node.body.body,
+          PARAMS: node.params,
         }
       } else {
-        template = `function f() { return BODY }`
+        template = `function f(PARAMS) { return BODY }`
         args = {
           BODY: node.body,
+          PARAMS: node.params,
         }
       }
 

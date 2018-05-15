@@ -49,9 +49,10 @@ export default class ImplicitReturnToExplicit implements Fixer {
     const node = nodes.find(n => n.type === 'ArrowFunctionExpression')
 
     if (node) {
-      const template = `() => { return BODY }`
+      const template = `(PARAMS) => { return BODY }`
       const args = {
         BODY: node.body,
+        PARAMS: node.params,
       }
 
       const newCode = this.ast.replaceNode(node, code, template, args).replace(/;$/, '')

@@ -59,3 +59,20 @@ test('should work inside expression', () => {
     },
   ])
 })
+
+test('should copy params', () => {
+  const code = `console.log(({b}) => b);`
+  const edit = mock.edit(0, code, 0, 15)
+
+  const expected = `({ b }) => {
+  return b
+}`
+
+  const change = Object.values(edit.changes)[0]
+  expect(change).toEqual([
+    {
+      newText: expected,
+      range: {start: {line: 0, character: 12}, end: {line: 0, character: 22}},
+    },
+  ])
+})

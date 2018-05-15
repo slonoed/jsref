@@ -58,3 +58,43 @@ test('should transform with body', () => {
     },
   })
 })
+
+test('should copy param', () => {
+  const code = `const foo = (a) => { return a }`
+  const edit = mock.edit(0, code, 0, 15)
+
+  const expected = `function f(a) {
+  return a
+}`
+
+  expect(edit).toEqual({
+    changes: {
+      'file://testfile.js': [
+        {
+          newText: expected,
+          range: {end: {character: 31, line: 0}, start: {character: 12, line: 0}},
+        },
+      ],
+    },
+  })
+})
+
+test('should copy params', () => {
+  const code = `const foo = (a, {title = 1}) => { return a }`
+  const edit = mock.edit(0, code, 0, 15)
+
+  const expected = `function f(a, { title = 1 }) {
+  return a
+}`
+
+  expect(edit).toEqual({
+    changes: {
+      'file://testfile.js': [
+        {
+          newText: expected,
+          range: {end: {character: 44, line: 0}, start: {character: 12, line: 0}},
+        },
+      ],
+    },
+  })
+})

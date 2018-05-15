@@ -49,10 +49,11 @@ export default class FunctionToArrow implements Fixer {
     const node = nodes.find(n => n.type === 'FunctionDeclaration')
 
     if (node) {
-      const arrowTemplate = 'const NAME = () => BODY'
+      const arrowTemplate = 'const NAME = (PARAMS) => BODY'
       const newCode = this.ast.replaceNode(node, code, arrowTemplate, {
         NAME: node.id,
         BODY: node.body,
+        PARAMS: node.params,
       })
 
       return createReplacementEdit(location.uri, node, newCode)
