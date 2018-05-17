@@ -1,3 +1,11 @@
 language: node_js
 node_js:
-  - "lts/*"
+- lts/*
+deploy:
+  provider: npm
+  email: email@slonoed.net
+  api_key:
+    secure: T+cEIuDM4t0r/42X56moAzSK5v2eAo3xkQ7vQcY/nJSNzG2tYtNWeXjmjqSfMlXu+l9FvTss6XMTZ8jjxKaYfrlSfjyoGTnUJ8TSZpACaldw2RF2uv4jsvOMHF3fgZsxGDtD2vjQrFnAb8Pg3gSGiRC8FmkljyHiiBaa16Bw8dkLCWZS760siQL6OseP/CkGdFAKJRiHSfdxrlQ6hvemsFlI7usaFN7HpljAcCFn1fcgmK5SZPyF7yVzBQTRj5blaaxRk2ynaKgNo0p1+YHabYWUWYXhBbeeybjKp5vuFGcxjiZkVyGQ6Fy+ooVEU/kjh4SiVN2o909loQL60qB6MytRwvBQwM5py3/hUyLhADiZ3GbUaq4cvCNCWombsp9YfYSUSBXgoNLFV0rF4Wij1hgEXrff0+WW7Ht8ueVJWsazjQmgSDCG5D/dQzCgxTo/e3XGJuopobobMslSbPjdbKfYaeOYrvvX8TCg/XN3kkLa5ZFPVptrmKzXdMthM8NGxh8DWJx//+KJbSpUyGbnFsg+pPl2BPqruPPLg5l68eCPMOYUhkfxKNQoTcdfgQLsD/mBJTWRGg3jjFBcUTqlLsGCZmDjqSC6BQJseRBbvy6aq4EwnSTrQWOZkDdILm9QfdKSCXo2Sy0e71gbpnCMSbh1a3B7n2/v9u34rApL3n0=
+  on:
+    branch: master
+    repo: slonoed/jsref

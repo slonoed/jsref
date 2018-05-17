@@ -1,12 +1,15 @@
 {
   "name": "@slonoed/jsref",
   "description": "JavaScript refactoring language server",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "main": "lib/index.js",
   "license": "WTFPL",
   "repository": "https://github.com/slonoed/jsref",
   "bin": {
     "jsref": "./lib/bin/cli.js"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "flow-watch": "fswatch -o ./src/ | xargs -n1 -I{} sh -c 'clear; printf \"\\033[3J\" && flow'",
@@ -27,9 +30,6 @@
     "babylon-walk": "^1.0.2",
     "log4js": "^2.6.0",
     "prettier": "^1.12.1",
-    "semver": "^5.5.0",
-    "temp": "0.8.3",
-    "through": "2.3.8",
     "vscode-jsonrpc": "^3.6.1",
     "vscode-languageserver": "^4.1.2",
     "vscode-languageserver-types": "^3.3.0",
