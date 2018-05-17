@@ -32,7 +32,7 @@ npm i -g @slonoed/jsref
 
 Executable `jsref` should be available in the PATH.
 
-Install [vim-lsc plugin][vim-lsc] and setup plugin
+Install [vim-lsc plugin][vim-lsc] and setup
 ```
 Plug 'natebosch/vim-lsc'
 let g:lsc_server_commands = {
