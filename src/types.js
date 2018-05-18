@@ -1,6 +1,6 @@
 // @flow
 
-import type {Node} from 'babylon-types'
+import type {Node} from 'babylon'
 import type {ICommand, ILocation, IPosition} from 'vscode-languageserver-types'
 import type {Logger} from 'log4js'
 

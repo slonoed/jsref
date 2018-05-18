@@ -6,7 +6,7 @@ import type {
   IPosition,
   IRange,
 } from 'vscode-languageserver-types'
-import type {Node, File, Location} from 'babylon-types'
+import type {Node, File, Location} from './babylon-types'
 import type {Logger} from 'log4js'
 
 import {parse} from 'babylon'
