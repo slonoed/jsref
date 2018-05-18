@@ -27,7 +27,7 @@ import fixersClasses from './fixes'
 
 export default class Server {
   connection: IConnection
-  logger: Logger
+  logger: String
   documentStorage: DocumentStorage
   fixers: Fixer[]
 
