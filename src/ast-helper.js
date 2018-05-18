@@ -60,7 +60,7 @@ export default class AstHelper {
     return formatted.trim()
   }
 
-  parseCode(code: string): Node {
+  parseCode(code: string): File {
     const ast = parse(code, {sourceType: 'module', plugins})
     return ast
   }
