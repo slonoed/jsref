@@ -1,7 +1,7 @@
 // @flow
 
 import {parse} from 'babylon'
-import type {Node} from 'babylon-types'
+import type {Node} from 'babylon'
 import {getLogger} from 'log4js'
 
 import AstHelper from '../ast-helper'
