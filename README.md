@@ -18,6 +18,7 @@ Supported refactorings:
 * Convert explicit return to implicit
 * Convert implicit return to explicit
 * Convert React function to class
+* Convert `require` to `import`
 
 ## Installation
 
@@ -48,6 +49,18 @@ let g:lsc_server_commands = {
 ### Atom
 
 [TBD][issue-atom]
+
+## Development
+
+Run watchers
+```
+npm run build-watch
+npm run test-watch
+npm run flow-watch
+```
+
+Logs in `/tmp/test/log/`. Check with `tail -f /tmp/test/logs`.
+Set LSC config to local `jsref` in `lib` folder.
 
 ## Contributing
 

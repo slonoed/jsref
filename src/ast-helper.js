@@ -40,7 +40,7 @@ export default class AstHelper {
   }
 
   replaceNode(node: Node, fileContent: string, template: string, args: {[string]: Node}): string {
-    const tpl = babelTemplate(template)
+    const tpl = babelTemplate(template, {sourceType: 'module', plugins})
     const ast = tpl(args)
     const replacement = babelGenerate(
       ast,
