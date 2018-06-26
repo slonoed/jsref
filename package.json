@@ -1,7 +1,7 @@
 {
   "name": "@slonoed/jsref",
   "description": "JavaScript refactoring language server",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "main": "lib/index.js",
   "license": "WTFPL",
   "repository": "https://github.com/slonoed/jsref",
@@ -30,10 +30,10 @@
     "babylon-walk": "^1.0.2",
     "log4js": "^2.6.0",
     "prettier": "^1.12.1",
-    "vscode-jsonrpc": "^3.6.1",
-    "vscode-languageserver": "^4.1.2",
-    "vscode-languageserver-types": "^3.3.0",
-    "vscode-uri": "^1.0.1",
+    "vscode-jsonrpc": "^3.6.2",
+    "vscode-languageserver": "^4.2.1",
+    "vscode-languageserver-types": "^3.8.2",
+    "vscode-uri": "^1.0.5",
     "yargs": "^11.0.0"
   },
   "engines": {

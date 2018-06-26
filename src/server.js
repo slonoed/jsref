@@ -18,7 +18,7 @@ import type {Logger} from 'log4js'
 import type {Fixer} from './types'
 
 import path from 'path'
-import {IConnection} from 'vscode-languageserver'
+import {IConnection, TextDocuments} from 'vscode-languageserver'
 import {getLogger} from 'log4js'
 
 import DocumentStorage from './document-storage'
@@ -34,7 +34,7 @@ export default class Server {
   constructor(connection: IConnection) {
     this.logger = getLogger('server')
     this.connection = connection
-    this.documentStorage = new DocumentStorage()
+    this.documentStorage = new DocumentStorage(connection)
 
     const fixerOpts = {
       documentStorage: this.documentStorage,
@@ -57,9 +57,6 @@ export default class Server {
   async onInit() {
     this.connection.onCodeAction(p => this.onCodeAction(p))
     this.connection.onExecuteCommand(p => this.onExecuteCommand(p))
-    this.connection.onDidOpenTextDocument(p => this.onDidOpenTextDocument(p))
-    this.connection.onDidChangeTextDocument(p => this.onDidChangeTextDocument(p))
-    this.connection.onDidCloseTextDocument(p => this.onDidCloseTextDocument(p))
 
     this.logger.debug('LSP server initialized')
     const commands: string[] = this.fixers.map(f => f.type)
@@ -81,6 +78,7 @@ export default class Server {
       const location = {uri, range}
 
       const commands = []
+      console.log(location)
       for (const fixer of this.fixers) {
         commands.push(...fixer.suggestCommands(location))
       }
@@ -103,20 +101,6 @@ export default class Server {
     } catch (e) {
       this.logger.error(e)
     }
-  }
-
-  async onDidOpenTextDocument(params: DidOpenTextDocumentParams) {
-    this.logger.trace('onDidOpenTextDocument', params)
-    this.documentStorage.add(params.textDocument.uri, params.textDocument.text)
-  }
-  async onDidChangeTextDocument(params: DidChangeTextDocumentParams) {
-    this.logger.trace('onDidChangeTextDocument', params)
-    const newText = params.contentChanges[0].text
-    this.documentStorage.add(params.textDocument.uri, newText)
-  }
-  async onDidCloseTextDocument(params: DidCloseTextDocumentParams) {
-    this.logger.trace('onDidCloseTextDocument', params)
-    this.documentStorage.remove(params.textDocument.uri)
   }
 
   getFixerOrThrow(type: string): Fixer {

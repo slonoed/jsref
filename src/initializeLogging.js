@@ -11,7 +11,8 @@ export default function initializeLogging(connection: IConnection) {
       everything: {type: 'file', filename: '/tmp/test/log'},
     },
     categories: {
-      default: {appenders: ['everything'], level: 'debug'},
+      // TODO implement correct debugging
+      default: {appenders: ['everything'], level: 'trace'},
     },
   })
 

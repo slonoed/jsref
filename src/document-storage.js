@@ -1,21 +1,15 @@
-// @low
+// @flow
+import {IConnection, TextDocuments} from 'vscode-languageserver'
 
 export default class DocumentStorage {
-  docs: Map<string, string>
+  documents: TextDocuments
 
-  constructor() {
-    this.docs = new Map()
+  constructor(connection: IConnection) {
+    this.documents = new TextDocuments()
+    this.documents.listen(connection)
   }
 
-  get(fileUri) {
-    return this.docs.get(fileUri)
-  }
-
-  add(fileUri, code) {
-    this.docs.set(fileUri, code)
-  }
-
-  remove(fileUri) {
-    this.docs.delete(fileUri)
+  get(fileUri: string) {
+    return this.documents.get(fileUri).getText()
   }
 }

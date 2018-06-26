@@ -8,6 +8,19 @@ import DocumentStorage from '../../document-storage'
 import AstHelper from '../../ast-helper'
 import FunctionToArrow from '../function-to-arrow'
 
+class FakeDocStorage {
+  docs: Map<string, string>
+  constructor() {
+    this.docs = new Map()
+  }
+  add(f, c) {
+    this.docs.set(f, c)
+  }
+  get(f) {
+    return this.docs.get(f)
+  }
+}
+
 type mock = {
   suggest: (code: string, line: number, character: number) => ICommand[],
   edit: (select: number, code: string, line: number, character: number) => Object,
@@ -19,7 +32,7 @@ export function createMock(FixerCls: Function): mock {
     const logger = getLogger('test')
     const pos = {line, character}
     const location = {uri, range: {start: pos, end: pos}}
-    const documentStorage = new DocumentStorage()
+    const documentStorage = new FakeDocStorage()
     const astHelper = new AstHelper(logger)
     const fixer = new FixerCls({logger, documentStorage, astHelper})
 
