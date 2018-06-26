@@ -101,4 +101,4 @@ Start with a [new issue][new-issue] ;)
 [vscode-jsref]: https://github.com/slonoed/vscode-jsref
 [issue-atom]: https://github.com/slonoed/jsref/issues/3
 [issue-emacs]: https://github.com/slonoed/jsref/issues/10
-[isse-sublime]: https://github.com/slonoed/jsref/issues/7
+[issue-sublime]: https://github.com/slonoed/jsref/issues/7
