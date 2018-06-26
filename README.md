@@ -44,11 +44,22 @@ let g:lsc_server_commands = {
 
 ### VSCode
 
-[TBD][issue-vscode]
+Install package globally via
+```
+npm i -g @slonoed/jsref
+```
+
+Executable `jsref` should be available in the PATH.
+
+Install package `vscode-jsref` via GUI or command `code-insiders --install-extension slonoed.vscode-jsref`.
+
+[vscode-jsref repo][vscode-jsref]
 
 ### Atom
 
 [TBD][issue-atom]
+
+_help needed_
 
 ## Development
 
@@ -75,5 +86,6 @@ Start with a [new issue][new-issue] ;)
 [ls-page]: https://langserver.org/
 [vim-lsc]: https://github.com/natebosch/vim-lsc/tree/master/after/plugin
 [new-issue]: https://github.com/slonoed/jsref/issues/new
+[vscode-jsref]: https://github.com/slonoed/vscode-jsref
 [issue-vscode]: https://github.com/slonoed/jsref/issues/2
 [issue-atom]: https://github.com/slonoed/jsref/issues/3
