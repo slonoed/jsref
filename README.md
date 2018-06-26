@@ -61,6 +61,18 @@ Install package `vscode-jsref` via GUI or command `code-insiders --install-exten
 
 _help needed_
 
+### Sublime Text 3
+
+[TBD][issue-sublime]
+
+_help needed_
+
+### Emacs
+
+[TBD][issue-emacs]
+
+_help needed_
+
 ## Development
 
 Run watchers
@@ -87,5 +99,6 @@ Start with a [new issue][new-issue] ;)
 [vim-lsc]: https://github.com/natebosch/vim-lsc/tree/master/after/plugin
 [new-issue]: https://github.com/slonoed/jsref/issues/new
 [vscode-jsref]: https://github.com/slonoed/vscode-jsref
-[issue-vscode]: https://github.com/slonoed/jsref/issues/2
 [issue-atom]: https://github.com/slonoed/jsref/issues/3
+[issue-emacs]: https://github.com/slonoed/jsref/issues/10
+[isse-sublime]: https://github.com/slonoed/jsref/issues/7
