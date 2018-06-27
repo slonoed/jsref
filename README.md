@@ -124,7 +124,7 @@ Set LSC config to local `jsref` in `lib` folder.
 
 ## Contributing
 
-Start with a [new issue][new-issue] ;)
+You can easily contribute by creating new kinds of refactoring. A good example can be found [fixer-example][here]. To avoid duplication, create [new issue][an issue] first.
 
 [js-refactor]: https://github.com/cmstead/js-refactor/blob/master/package.json
 [babylon]: https://github.com/babel/babel/tree/master/packages/babylon
@@ -139,3 +139,5 @@ Start with a [new issue][new-issue] ;)
 [issue-atom]: https://github.com/slonoed/jsref/issues/3
 [issue-emacs]: https://github.com/slonoed/jsref/issues/10
 [issue-sublime]: https://github.com/slonoed/jsref/issues/7
+[fixer-example]: https://github.com/slonoed/jsref/blob/master/src/fixes/implicit-return-to-explicit.js
+
