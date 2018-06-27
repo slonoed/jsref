@@ -63,9 +63,28 @@ _help needed_
 
 ### Sublime Text 3
 
-[TBD][issue-sublime]
+Install package globally via
+```
+npm i -g @slonoed/jsref
+```
 
-_help needed_
+Install LSP package from Package Control.
+
+Add new client to LSP via `Preferences: LSP Setting`.
+```
+"jsref": {
+	"command": ["jsref", "--stdio"],
+	"scopes": ["source.js"],
+	"syntaxes": [
+		"Packages/babel-sublime/JavaScript (Babel).tmLanguage",
+		"Packages/Babel/JavaScript (Babel).sublime-syntax",
+		"Packages/JavaScript/JavaScript.sublime-syntax"
+	],
+	"languageId": "javascript",
+},
+```
+
+Enable language server via `LSP: Enable Language Server Globally` or `LSP: Enable Language Server in Project`
 
 ### Emacs
 
