@@ -73,7 +73,7 @@ Install LSP package from Package Control.
 Add new client to LSP via `Preferences: LSP Setting`.
 ```
 "jsref": {
-	"command": ["jsref", "--stdio"],
+  "command": ["jsref", "--stdio"],
 	"scopes": ["source.js"],
 	"syntaxes": [
 		"Packages/babel-sublime/JavaScript (Babel).tmLanguage",
@@ -82,6 +82,24 @@ Add new client to LSP via `Preferences: LSP Setting`.
 	],
 	"languageId": "javascript",
 },
+```
+
+Final config should look like this
+```
+{
+  "clients": {
+    "jref": {
+      "command": ["jsref", "--stdio"],
+      "scopes": ["source.js"],
+      "syntaxes": [
+        "Packages/babel-sublime/JavaScript (Babel).tmLanguage",
+        "Packages/Babel/JavaScript (Babel).sublime-syntax",
+        "Packages/JavaScript/JavaScript.sublime-syntax"
+      ],
+      "languageId": "javascript"
+    }
+  }
+}
 ```
 
 Enable language server via `LSP: Enable Language Server Globally` or `LSP: Enable Language Server in Project`
