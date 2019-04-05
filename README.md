@@ -1,45 +1,143 @@
-# LSP Example for Log Streaming
+# jsref
 
-This is a repository adapted from [lsp-sample](https://github.com/Microsoft/vscode-extension-samples/tree/master/lsp-sample) to demonstrate
+JavaScript refactoring language server
 
-- Usage of the JSON output
-- Streaming the JSON into [LSP Inspector](https://github.com/Microsoft/language-server-protocol-inspector)
+![Demo Animation](../assets/preview.gif?raw=true)
 
-## Demo
+An idea behind this project is to have desirable refactoring experience for JavaScript without tying to any editor.
 
-![demo](demo.gif)
+This tool implements [language server protocol][ls] (LSP) to avoid any direct binding to code editors.
+This means any [editor with LSP support][ls-page] can use it.
 
-## Synopsis
+It uses babylon parser to parse and generate JavaScript.
 
-- With `vscode-languageclient@5.1.0-next.9`, you can specify a JSON log output format with `[langId].trace.server` as follows:
-  ```json
-  "languageServerExample.trace.server": {
-    "format": "json", // or "text"
-    "verbosity": "verbose" // or "off" | "messages"
+Supported refactorings:
+
+* Convert arrow function to regular function
+* Convert regular function to arrow function
+* Convert explicit return to implicit
+* Convert implicit return to explicit
+* Convert React function to class
+* Convert `require` to `import`
+
+## Installation
+
+This plugin requires NodeJS >8 and NPM.
+
+### Vim
+
+Install package globally via
+```
+npm i -g @slonoed/jsref
+```
+
+Executable `jsref` should be available in the PATH.
+
+Install [vim-lsc plugin][vim-lsc] and setup
+```
+Plug 'natebosch/vim-lsc'
+let g:lsc_server_commands = {
+\'javascript': 'jsref --stdio',
+\'javascript.jsx': 'jsref --stdio',
+\}
+```
+
+### VSCode
+
+Install package globally via
+```
+npm i -g @slonoed/jsref
+```
+
+Executable `jsref` should be available in the PATH.
+
+Install package `vscode-jsref` via GUI or command `code-insiders --install-extension slonoed.vscode-jsref`.
+
+[vscode-jsref repo][vscode-jsref]
+
+### Atom
+
+[TBD][issue-atom]
+
+_help needed_
+
+### Sublime Text 3
+
+Install package globally via
+```
+npm i -g @slonoed/jsref
+```
+
+Install LSP package from Package Control.
+
+Add new client to LSP via `Preferences: LSP Setting`.
+```
+"jsref": {
+  "command": ["jsref", "--stdio"],
+	"scopes": ["source.js"],
+	"syntaxes": [
+		"Packages/babel-sublime/JavaScript (Babel).tmLanguage",
+		"Packages/Babel/JavaScript (Babel).sublime-syntax",
+		"Packages/JavaScript/JavaScript.sublime-syntax"
+	],
+	"languageId": "javascript",
+},
+```
+
+Final config should look like this
+```
+{
+  "clients": {
+    "jref": {
+      "command": ["jsref", "--stdio"],
+      "scopes": ["source.js"],
+      "syntaxes": [
+        "Packages/babel-sublime/JavaScript (Babel).tmLanguage",
+        "Packages/Babel/JavaScript (Babel).sublime-syntax",
+        "Packages/JavaScript/JavaScript.sublime-syntax"
+      ],
+      "languageId": "javascript"
+    }
   }
-  ```
-- A [webview](https://github.com/Microsoft/language-server-protocol-inspector/tree/master/lsp-inspector-webview) build of the LSP Inspector can be downloaded here: https://marketplace.visualstudio.com/items?itemName=octref.lsp-inspector-webview
-- When using the Webview LSP Inspector, it will open a WebSocket Server taking incoming connection that sends logs following [this format](https://github.com/Microsoft/language-server-protocol-inspector#log-format).
-- You can stream the JSON log of any Language Server using `vscode-languageclient` to the LSP Inspector, and it will show a live view of the LSP connection.
+}
+```
 
-## Running the Sample
+Enable language server via `LSP: Enable Language Server Globally` or `LSP: Enable Language Server in Project`
 
-- Install the [LSP Inspector Webview](https://marketplace.visualstudio.com/items?itemName=octref.lsp-inspector-webview) extension
-- Compile and Run this Extension
-  - `npm install`
-  - `npm run compile`
-  - F5 to run the extension
-- Add the following setting:
-  ```json
-  "languageServerExample.trace.server": {
-    "format": "json",
-    "verbosity": "verbose"
-  },
-  ```
-- Open a txt file so this Language Server gets activated
-- Run command "LSP Inspector: Start LSP Inspector"
-- Run command "Start Stream Logs into languageServerExample.port"
-- As you are typing, doing auto-completion, many messages should show up in the inspector, such as
-  - `textDocument/didChange`
-  - `textDocument/completion`
-  - `textDocument/publishDiagnostics`
+### Emacs
+
+[TBD][issue-emacs]
+
+_help needed_
+
+## Development
+
+Run watchers
+```
+npm run build-watch
+npm run test-watch
+npm run flow-watch
+```
+
+Logs in `/tmp/test/log/`. Check with `tail -f /tmp/test/logs`.
+Set LSC config to local `jsref` in `lib` folder.
+
+## Contributing
+
+You can easily contribute by creating new kinds of refactoring. A good example can be found [fixer-example][here]. To avoid duplication, create [new issue][an issue] first.
+
+[js-refactor]: https://github.com/cmstead/js-refactor/blob/master/package.json
+[babylon]: https://github.com/babel/babel/tree/master/packages/babylon
+[lsc]: https://github.com/natebosch/vim-lsc
+[jtl]: https://github.com/sourcegraph/javascript-typescript-langserver/blob/master/src/plugins.ts
+[grasp]: http://www.graspjs.com/
+[ls]: https://microsoft.github.io/language-server-protocol/
+[ls-page]: https://langserver.org/
+[vim-lsc]: https://github.com/natebosch/vim-lsc/tree/master/after/plugin
+[new-issue]: https://github.com/slonoed/jsref/issues/new
+[vscode-jsref]: https://github.com/slonoed/vscode-jsref
+[issue-atom]: https://github.com/slonoed/jsref/issues/3
+[issue-emacs]: https://github.com/slonoed/jsref/issues/10
+[issue-sublime]: https://github.com/slonoed/jsref/issues/7
+[fixer-example]: https://github.com/slonoed/jsref/blob/master/src/fixes/implicit-return-to-explicit.js
+
