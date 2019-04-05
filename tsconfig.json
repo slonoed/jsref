@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "strict": false,
+    "target": "es3",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": false,
+    "outDir": "build/js",
+    "rootDir": "src",
+    "lib": ["es6"],
+    "downlevelIteration": true
+  },
+  "include": ["./src"],
+  "exclude": ["node_modules", "**/__tests__/*"]
+}

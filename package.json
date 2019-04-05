@@ -1,56 +1,51 @@
 {
   "name": "@slonoed/jsref",
   "description": "JavaScript refactoring language server",
-  "version": "0.6.1",
-  "main": "lib/index.js",
+  "version": "1.0.0",
+  "author": "Dmitry Manannikov <email@slonoed.net> (https://slonoed.net/)",
   "license": "WTFPL",
   "repository": "https://github.com/slonoed/jsref",
-  "bin": {
-    "jsref": "./lib/bin/cli.js"
-  },
+  "categories": [
+    "refactoring"
+  ],
+  "keywords": [],
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "flow-watch": "fswatch -o ./src/ | xargs -n1 -I{} sh -c 'clear; printf \"\\033[3J\" && flow'",
-    "lint": "npx eslint src",
-    "test": "npx flow && npm run lint && npx jest src",
-    "test-watch": "npx jest --watch src",
-    "build": "npx babel -d lib src",
-    "build-watch": "npx babel --watch -d lib src"
-  },
-  "dependencies": {
-    "babel-generator": "^6.26.1",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-flow": "^6.23.0",
-    "babel-preset-stage-1": "^6.24.1",
-    "babel-template": "^6.26.0",
-    "babel-types": "^6.26.0",
-    "babylon": "^6.18.0",
-    "babylon-walk": "^1.0.2",
-    "log4js": "^2.6.0",
-    "prettier": "^1.12.1",
-    "vscode-jsonrpc": "^3.6.2",
-    "vscode-languageserver": "^4.2.1",
-    "vscode-languageserver-types": "^3.8.2",
-    "vscode-uri": "^1.0.5",
-    "yargs": "^11.0.0"
-  },
-  "engines": {
-    "node": ">=8"
+    "vscode:prepublish": "cd client && npm run update-vscode && cd .. && npm run compile",
+    "compile:client": "tsc -p ./client/tsconfig.json",
+    "compile:server": "tsc -p ./server/tsconfig.json",
+    "watch:client": "tsc -w -p ./client/tsconfig.json",
+    "watch:server": "tsc -w -p ./server/tsconfig.json",
+    "watch:all": "npm run watch:server & npm run watch:client",
+    "compile": "tsc -w -p ./tsconfig.json",
+    "postinstall": "vscode-install",
+    "test": "sh ./scripts/e2e.sh"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-eslint": "^8.2.3",
-    "babel-jest": "^22.4.3",
-    "eslint": "^4.19.1",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-babel": "^5.1.0",
-    "eslint-plugin-import": "^2.9.0",
-    "eslint-plugin-prettier": "^2.1.2",
-    "eslint-plugin-rulesdir": "^0.1.0",
-    "flow-bin": "^0.72.0",
-    "jest": "^22.4.3",
-    "sinon": "^5.0.7"
+    "@types/jest": "^24.0.11",
+    "@types/node": "^11.11.6",
+    "jest": "^24.5.0",
+    "prettier": "^1.16.4",
+    "ts-jest": "^24.0.0",
+    "ts-node": "^8.0.3",
+    "tslint": "^5.14.0",
+    "typescript": "^3.3.4000",
+    "vscode": "^1.1.30",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/fs-extra": "^5.0.5",
+    "@types/jscodeshift": "^0.6.0",
+    "@types/minimist": "^1.2.0",
+    "vscode-languageclient": "^5.3.0-next.3"
+  },
+  "engines": {
+    "vscode": "^1.32"
+  },
+  "dependencies": {
+    "fs-extra": "^7.0.1",
+    "jscodeshift": "^0.6.3",
+    "minimist": "^1.2.0",
+    "vscode-languageserver": "^5.3.0-next.4"
   }
 }

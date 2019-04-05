@@ -1,3 +1,6 @@
-node_modules/
-lib/
-coverage/
+build
+node_modules
+client/server
+.vscode-test
+.idea
+.vscode
