@@ -23,7 +23,7 @@ compile: clean
 
 
 .PHONE: npm-pack
-npmpack: compile
+npm-pack: compile
 	mkdir -p build/npm
 	cp -r build/js build/npm/src
 	chmod +x build/npm/src/bin.js
