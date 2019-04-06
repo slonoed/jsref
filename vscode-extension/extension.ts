@@ -1,8 +1,5 @@
-/*
-Extension for debug. Sends logs to LSP Inspector
-*/
 import * as path from 'path'
-import {commands, ExtensionContext, OutputChannel} from 'vscode'
+import {ExtensionContext} from 'vscode'
 
 import {
   LanguageClient,
@@ -16,7 +13,7 @@ const languages = ['javascript', 'javascriptreact', 'typescript', 'typescriptrea
 let client: LanguageClient
 
 export function activate(context: ExtensionContext) {
-  let serverModule = path.join(__dirname, '../../../bin/jsref.js')
+  let serverModule = path.join(__dirname, './node_modules/@slonoed/jsref/src/bin.js')
   let debugOptions = {execArgv: ['--nolazy', '--inspect=6009']}
 
   let serverOptions: ServerOptions = {
@@ -31,22 +28,14 @@ export function activate(context: ExtensionContext) {
 
   let clientOptions: LanguageClientOptions = {
     documentSelector: languages.map(language => ({scheme: 'file', language})),
-    synchronize: {},
   }
 
   client = new LanguageClient(
-    'languageServerExample',
-    'Language Server Example',
+    'slonoed_jsref',
+    'JavaScript refactoring language server',
     serverOptions,
     clientOptions
   )
-
-  // Handle manual server restart
-  commands.registerCommand('languageServerExample.restart', async () => {
-    await client.stop()
-    console.log('Server restarted')
-    client.start()
-  })
 
   client.start()
 }

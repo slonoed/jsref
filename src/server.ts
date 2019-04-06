@@ -14,7 +14,7 @@ import {
   ProposedFeatures,
 } from 'vscode-languageserver'
 import FixerService from './fixer-service'
-import {Logger, createConnectionLogger, createFileLogger} from './logger'
+import {Logger, createConnectionLogger, createFileLogger, createNoopLogger} from './logger'
 import * as Inspector from './inspector'
 import * as minimist from 'minimist'
 
@@ -32,9 +32,11 @@ function createLspConnection(): Connection {
 function createLogger(connection: Connection): Logger {
   if (argv.log) {
     return createFileLogger(argv.log)
-  } else {
+  } else if (argv.debug) {
     return createConnectionLogger(connection)
   }
+
+  return createNoopLogger()
 }
 
 export function create() {

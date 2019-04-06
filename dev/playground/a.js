@@ -1,1 +1,3 @@
-const a = b === 1 ? d : c
+const a = () => {
+  return 1
+}

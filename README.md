@@ -13,27 +13,27 @@ It uses babylon parser to parse and generate JavaScript.
 
 Supported refactorings:
 
-* Convert arrow function to regular function
-* Convert regular function to arrow function
-* Convert explicit return to implicit
-* Convert implicit return to explicit
-* Convert React function to class
-* Convert `require` to `import`
+- Convert arrow function to regular function
+- Convert regular function to arrow function
+- Convert explicit return to implicit
+- Convert implicit return to explicit
+- Convert React function to class
+- Convert `require` to `import`
 
 ## Installation
 
-This plugin requires NodeJS >8 and NPM.
+Install globally via brew
+
+```
+ brew install slonoed/tap/jsref
+```
+
+You can also install via npm (`npm i -g @slonoed/jsref`). Ensure you maintain correct PATH.
 
 ### Vim
 
-Install package globally via
-```
-npm i -g @slonoed/jsref
-```
-
-Executable `jsref` should be available in the PATH.
-
 Install [vim-lsc plugin][vim-lsc] and setup
+
 ```
 Plug 'natebosch/vim-lsc'
 let g:lsc_server_commands = {
@@ -42,9 +42,12 @@ let g:lsc_server_commands = {
 \}
 ```
 
+By default [vim-lsc][vim-lsc] adds `ga` shortcut for requesting code actions.
+
 ### VSCode
 
 Install package globally via
+
 ```
 npm i -g @slonoed/jsref
 ```
@@ -64,6 +67,7 @@ _help needed_
 ### Sublime Text 3
 
 Install package globally via
+
 ```
 npm i -g @slonoed/jsref
 ```
@@ -71,6 +75,7 @@ npm i -g @slonoed/jsref
 Install LSP package from Package Control.
 
 Add new client to LSP via `Preferences: LSP Setting`.
+
 ```
 "jsref": {
   "command": ["jsref", "--stdio"],
@@ -85,6 +90,7 @@ Add new client to LSP via `Preferences: LSP Setting`.
 ```
 
 Final config should look like this
+
 ```
 {
   "clients": {
@@ -112,15 +118,25 @@ _help needed_
 
 ## Development
 
-Run watchers
+TBD
+
+## Deploy
+
+Release npm:
+
 ```
-npm run build-watch
-npm run test-watch
-npm run flow-watch
+make npmpack
+cd build/npm
+npm publish
 ```
 
-Logs in `/tmp/test/log/`. Check with `tail -f /tmp/test/logs`.
-Set LSC config to local `jsref` in `lib` folder.
+Release brew tap (after npm release):
+
+```
+noob @slonoed/jsref | sed 's/Slonoed//' | pbcopy
+```
+
+Add text from clipboard to the tap repo
 
 ## Contributing
 
@@ -140,4 +156,3 @@ You can easily contribute by creating new kinds of refactoring. A good example c
 [issue-emacs]: https://github.com/slonoed/jsref/issues/10
 [issue-sublime]: https://github.com/slonoed/jsref/issues/7
 [fixer-example]: https://github.com/slonoed/jsref/blob/master/src/fixes/implicit-return-to-explicit.js
-

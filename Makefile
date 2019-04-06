@@ -30,3 +30,24 @@ npmpack: compile
 	cat package.json | jq '. | del(.engines, .scripts, .devDependencies) | .bin += {"jsref": "./src/bin.js"}' > build/npm/package.json
 
 
+### VSCode #################################################################################333
+
+.PHONY: vscode-publish
+vscode-publish: vscode
+	cd build/vscode-extension && vsce publish
+
+.PHONY: vscode
+vscode: build/vscode-extension/extension.js build/vscode-extension/package.json build/vscode-extension/README.md
+	cd build/vscode-extension && npm i
+
+build/vscode-extension:
+	mkdir -p build/vscode-extension
+
+build/vscode-extension/README.md: build/vscode-extension vscode-extension/README.md
+	cp vscode-extension/README.md build/vscode-extension/README.md
+
+build/vscode-extension/extension.js: build/vscode-extension
+	tsc vscode-extension/extension.ts --outDir build/vscode-extension
+
+build/vscode-extension/package.json: build/vscode-extension vscode-extension/package.json
+	jq -s '.[1].dependencies["@slonoed/jsref"]=.[0].version | .[1]' package.json vscode-extension/package.json > build/vscode-extension/package.json
