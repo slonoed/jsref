@@ -22,13 +22,16 @@ compile: clean
 	tsc
 
 
-.PHONE: npmpack
+.PHONE: npm-pack
 npmpack: compile
 	mkdir -p build/npm
 	cp -r build/js build/npm/src
 	chmod +x build/npm/src/bin.js
 	cat package.json | jq '. | del(.engines, .scripts, .devDependencies) | .bin += {"jsref": "./src/bin.js"}' > build/npm/package.json
 
+.PHONY: npm-publish
+npm-publish: npm-pack
+	cd build/npm && npm publish
 
 ### VSCode #################################################################################333
 
