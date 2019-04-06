@@ -33,7 +33,16 @@ npm-pack: compile
 npm-publish: npm-pack
 	cd build/npm && npm publish
 
-### VSCode #################################################################################333
+### Homebrew ##################################################################################
+
+.PHONY: brew-publish
+brew-publish:
+	rm -rf /tmp/jsref-brew-tap
+	git clone git@github.com:slonoed/homebrew-tap.git /tmp/jsref-brew-tap
+	noob @slonoed/jsref | sed 's/Slonoed//' > /tmp/jsref-brew-tap/jsref.rb
+	cd /tmp/jsref-brew-tap/ && git commit -am 'Update to latest jsref' && git push
+
+### VSCode ####################################################################################
 
 .PHONY: vscode-publish
 vscode-publish: vscode
