@@ -17,7 +17,7 @@ export function activate(context: ExtensionContext) {
   let debugOptions = {execArgv: ['--nolazy', '--inspect=6009']}
 
   let serverOptions: ServerOptions = {
-    run: {module: serverModule, transport: TransportKind.stdio, args: ['--stdio', '--debug']},
+    run: {module: serverModule, transport: TransportKind.stdio, args: ['--stdio']},
     debug: {
       module: serverModule,
       args: ['--stdio', '--debug'],

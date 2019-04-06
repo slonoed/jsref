@@ -26,6 +26,16 @@ export function findFirstNode<T>(
   return firstNode(coll)
 }
 
+export function findLastNode<T>(
+  ast: Collection<File>,
+  type: Type<T>,
+  filter: (n: T) => boolean
+): T | null {
+  const coll = ast.find(type, filter)
+  const nodes = coll.nodes()
+  return nodes[nodes.length - 1] || null
+}
+
 export function cloneNode<T>(j: jscodeshift.JSCodeshift, node: T): T {
   return j(node as any).nodes()[0] as T
 }

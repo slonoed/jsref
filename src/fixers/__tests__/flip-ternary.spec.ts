@@ -15,4 +15,14 @@ describe('javascript', () => {
       title: 'Flip ternary',
     })
   })
+  it('nested, should convert inner', () => {
+    const source = 'a ? b : x ? y : z'
+    const r = buildEditResponse(source, range.create(1, 11, 1, 11))
+
+    expect(r).toEqual({
+      newText: '!x ? z : y',
+      range: {end: {column: 17, line: 1}, start: {column: 8, line: 1}},
+      title: 'Flip ternary',
+    })
+  })
 })
