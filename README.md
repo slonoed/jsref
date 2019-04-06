@@ -13,22 +13,25 @@ It uses babylon parser to parse and generate JavaScript.
 
 Supported refactorings:
 
-- Convert arrow function to regular function
 - Convert regular function to arrow function
 - Convert explicit return to implicit
 - Convert implicit return to explicit
-- Convert React function to class
 - Convert `require` to `import`
+- Expand empty JSX tag
+- Flip ternary expression
+
+Experimental refactorings (can be removed in future):
+
+- Disable Jest test (add '.skip')
+- Enable Jest test (remove '.skip')
 
 ## Installation
 
 Install globally via brew
 
 ```
- brew install slonoed/tap/jsref
+brew install slonoed/tap/jsref
 ```
-
-You can also install via npm (`npm i -g @slonoed/jsref`). Ensure you maintain correct PATH.
 
 ### Vim
 
@@ -44,19 +47,13 @@ let g:lsc_server_commands = {
 
 By default [vim-lsc][vim-lsc] adds `ga` shortcut for requesting code actions.
 
-### VSCode
+### [VSCode][vscode-jsref-marketplace]
 
-Install package globally via
+_VSCode extension contains server and you don't need to install global one with `brew`._
 
-```
-npm i -g @slonoed/jsref
-```
+Search in **Extensions** panel for `jsref` or install via CLI
 
-Executable `jsref` should be available in the PATH.
-
-Install package `vscode-jsref` via GUI or command `code-insiders --install-extension slonoed.vscode-jsref`.
-
-[vscode-jsref repo][vscode-jsref]
+`code-insiders --install-extension slonoed.jsref`
 
 ### Atom
 
@@ -66,13 +63,7 @@ _help needed_
 
 ### Sublime Text 3
 
-Install package globally via
-
-```
-npm i -g @slonoed/jsref
-```
-
-Install LSP package from Package Control.
+Install **LSP** package from Package Control.
 
 Add new client to LSP via `Preferences: LSP Setting`.
 
@@ -116,13 +107,17 @@ Enable language server via `LSP: Enable Language Server Globally` or `LSP: Enabl
 
 _help needed_
 
+## Plans
+
+- More refactorings! If you need some speciefic, create an [issue][new-issue]
+
 ## Development
 
 TBD
 
 ## Deploy
 
-Release npm:
+### Release npm package
 
 ```
 make npmpack
@@ -130,7 +125,7 @@ cd build/npm
 npm publish
 ```
 
-Release brew tap (after npm release):
+### Release brew tap (after npm release)
 
 ```
 noob @slonoed/jsref | sed 's/Slonoed//' | pbcopy
@@ -151,8 +146,8 @@ You can easily contribute by creating new kinds of refactoring. A good example c
 [ls-page]: https://langserver.org/
 [vim-lsc]: https://github.com/natebosch/vim-lsc/tree/master/after/plugin
 [new-issue]: https://github.com/slonoed/jsref/issues/new
-[vscode-jsref]: https://github.com/slonoed/vscode-jsref
 [issue-atom]: https://github.com/slonoed/jsref/issues/3
 [issue-emacs]: https://github.com/slonoed/jsref/issues/10
 [issue-sublime]: https://github.com/slonoed/jsref/issues/7
 [fixer-example]: https://github.com/slonoed/jsref/blob/master/src/fixes/implicit-return-to-explicit.js
+[vscode-jsref-marketplace]: https://marketplace.visualstudio.com/items?itemName=slonoed.jsref
