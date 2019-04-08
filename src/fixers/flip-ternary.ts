@@ -11,11 +11,13 @@ const fixer: Fixer<Data> = {
   suggestCodeAction(params) {
     const {j, ast} = params
 
-    const node = Ast.findLastNode(ast, j.ConditionalExpression, n =>
-      Range.isInside(params.selection, n.loc)
+    const node = Ast.findLastNode(
+      ast,
+      j.ConditionalExpression,
+      n => n.loc !== null && Range.isInside(params.selection, n.loc)
     )
 
-    if (!node) {
+    if (!node || !node.loc) {
       return null
     }
 
@@ -28,6 +30,9 @@ const fixer: Fixer<Data> = {
     const {data, ast, j} = params
 
     const node = Ast.findFirstNode(ast, j.ConditionalExpression, n => Ast.isOnPosition(n, data))
+    if (!node) {
+      return null
+    }
 
     const consequent = node.consequent
     const alternate = node.alternate

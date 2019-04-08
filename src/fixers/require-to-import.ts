@@ -18,11 +18,12 @@ const fixer: Fixer<Data> = {
       n =>
         j.Identifier.check(n.callee) &&
         n.callee.name === 'require' &&
+        !!n.loc &&
         Range.isInside(params.selection, n.loc)
     )
 
-    if (!node) {
-      return
+    if (!node || !node.loc) {
+      return null
     }
 
     return {
@@ -36,16 +37,22 @@ const fixer: Fixer<Data> = {
     const collection = Ast.find(ast, j.CallExpression, n => Ast.isOnPosition(n, data))
 
     const fnode = Ast.firstNode(collection)
+    if (!fnode) {
+      return null
+    }
     const arg = fnode.arguments[0]
     const importPath = j.Literal.check(arg) ? arg.value : 'unknown'
 
     const vd = collection.closest(j.VariableDeclaration)
     if (vd.size() === 1) {
       const vnode = Ast.firstNode(vd)
+      if (!vnode) {
+        return null
+      }
       const pc = collection.closest(j.VariableDeclarator)
       if (pc.size()) {
         const p = Ast.firstNode(pc)
-        if (j.Identifier.check(p.id)) {
+        if (p && j.Identifier.check(p.id)) {
           const importVar = p.id.name
           const decl = j.importDeclaration(
             [j.importDefaultSpecifier(j.identifier(importVar))],

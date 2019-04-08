@@ -20,6 +20,9 @@ it('initialize response', async () => {
 
   const data: string = await new Promise(r => {
     let answer = ''
+    if (!proc.stdout) {
+      throw new Error('no stdout')
+    }
     proc.stdout.on('data', c => {
       answer += String(c)
       const parts = answer.split('\r\n\r\n')
@@ -58,6 +61,9 @@ function callRpc(proc: cp.ChildProcess, method: string, params: any, id?: number
   const size = Buffer.byteLength(pack, 'utf8')
   const headers = `Content-Length: ${size}\r\n\r\n`
   const data = headers + pack
+  if (!proc.stdin) {
+    throw new Error('no stdin')
+  }
   proc.stdin.write(data, err => {
     if (err) {
       console.log('error writing: ', err.message)

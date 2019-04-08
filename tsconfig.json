@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "strict": false,
     "target": "es3",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -8,8 +7,9 @@
     "outDir": "build/js",
     "rootDir": "src",
     "lib": ["es6"],
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "strict": true
   },
   "include": ["./src"],
-  "exclude": ["node_modules", "**/__tests__/*"]
+  "exclude": ["node_modules"]
 }

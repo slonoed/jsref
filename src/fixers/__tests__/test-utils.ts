@@ -19,7 +19,7 @@ export function createBuildFunction<T>(fixer: Fixer<T>) {
     const action = fixer.suggestCodeAction(params)
 
     if (!action) {
-      return null
+      throw new Error('No suggested action returned from fixer')
     }
 
     const edit = fixer.createEdit({
@@ -27,6 +27,10 @@ export function createBuildFunction<T>(fixer: Fixer<T>) {
       ast: api(source),
       data: action.data,
     })
+
+    if (!edit) {
+      throw new Error('No edit returned from fixer')
+    }
 
     return {
       title: action.title,

@@ -12,19 +12,29 @@ export default class AstService {
 
   getAstTree(uri: string): Collection<any> | null {
     const j = this.getCodeShift(uri)
-    const source = this.documents.get(uri).getText()
+    if (!j) {
+      return null
+    }
+    const document = this.documents.get(uri)
+    if (!document) {
+      return null
+    }
+    const source = document.getText()
     try {
       return j(source)
     } catch (e) {
-      // TODO send debug level message
-      this.logger.log(e.message)
+      // Source is broken. Always when user typing
       return null
     }
   }
 
-  getCodeShift(uri: string): jscodeshift.JSCodeshift {
-    // TODO handle differenct land ids
+  getCodeShift(uri: string): jscodeshift.JSCodeshift | null {
     const document = this.documents.get(uri)
+
+    if (!document) {
+      this.logger.error(`No document found for uri: ${uri}`)
+      return null
+    }
     const langId = document.languageId
 
     if (langId === 'javascript' && isFlowCode(document.getText())) {

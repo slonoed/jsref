@@ -31,5 +31,5 @@ export type CreateEditResult = Patch.t
 
 export interface Fixer<T> {
   suggestCodeAction(params: SuggestActionParams): SuggestActionResult<T> | null
-  createEdit(params: CreateEditParams<T>): CreateEditResult
+  createEdit(params: CreateEditParams<T>): CreateEditResult | null
 }

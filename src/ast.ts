@@ -41,6 +41,9 @@ export function cloneNode<T>(j: jscodeshift.JSCodeshift, node: T): T {
 }
 
 export function isOnPosition(n: jscodeshift.Printable, pos: Position.t) {
+  if (!n.loc) {
+    return false
+  }
   return n.loc.start.line === pos.line && n.loc.start.column === pos.column
 }
 export function negateExpression(j: jscodeshift.JSCodeshift, expr: ExpressionKind) {

@@ -75,7 +75,10 @@ export default class FixerService {
   }
 
   createEdit(params: ExecuteCommandParams): ApplyWorkspaceEditParams | null {
-    const uri = params.arguments[0].uri
+    if (!params.arguments) {
+      return null
+    }
+    const uri = params.arguments[0].uri as string
     const fixer = this.fixers.get(params.command)
 
     if (!fixer) {
@@ -84,13 +87,23 @@ export default class FixerService {
     }
 
     const jscodeshift = this.astService.getCodeShift(uri)
+    if (!jscodeshift) {
+      return null
+    }
     const ast = this.astService.getAstTree(uri)
+    if (!ast) {
+      return null
+    }
     const createEditParams = {
       ast,
       j: jscodeshift,
       data: params.arguments[1],
     }
     const edit = fixer.createEdit(createEditParams)
+
+    if (!edit) {
+      return null
+    }
 
     return {
       label: params.command,
@@ -109,10 +122,10 @@ export default class FixerService {
     const fixers = new Map()
     names
       .filter(f => f)
-      .map(n => this.parseFixer(n))
+      .map(n => this.parseFixer(n as string))
       .filter(f => f)
-      .forEach(f => {
-        fixers.set(f.id, {suggestCodeAction: f.suggestCodeAction, createEdit: f.createEdit})
+      .forEach(([id, fixer]) => {
+        fixers.set(id, fixer)
       })
 
     return fixers
@@ -126,7 +139,7 @@ export default class FixerService {
     return stat.isFile() ? fileName : null
   }
 
-  private parseFixer(fileName: string) {
+  private parseFixer(fileName: string): [string, Fixer<any>] | null {
     let fixer
     try {
       fixer = require(fullPath(fileName))
@@ -158,10 +171,12 @@ export default class FixerService {
 
     const name = path.basename(fileName, path.extname(fileName))
 
-    return {
-      id: name,
-      suggestCodeAction: suggestCodeAction,
-      createEdit: createEdit,
-    }
+    return [
+      name,
+      {
+        suggestCodeAction: suggestCodeAction,
+        createEdit: createEdit,
+      },
+    ]
   }
 }

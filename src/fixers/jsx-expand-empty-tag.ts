@@ -13,14 +13,15 @@ const fixer: Fixer<Data> = {
 
     const node = Ast.findFirstNode(ast, j.JSXElement, n => {
       return (
+        !!n.loc &&
         Range.isInside(params.selection, n.loc) &&
         n.closingElement === null &&
         n.openingElement.selfClosing === true
       )
     })
 
-    if (!node) {
-      return
+    if (!node || !node.loc) {
+      return null
     }
 
     const tagNameNode = node.openingElement.name
@@ -35,8 +36,14 @@ const fixer: Fixer<Data> = {
     const {data, ast, j} = params
 
     const node = Ast.findFirstNode(ast, j.JSXElement, n => Ast.isOnPosition(n, data))
+    if (!node) {
+      return null
+    }
 
     const newNode = Ast.cloneNode(j, node)
+    if (!newNode) {
+      return null
+    }
 
     newNode.closingElement = j.jsxClosingElement(node.openingElement.name)
     newNode.openingElement.selfClosing = false

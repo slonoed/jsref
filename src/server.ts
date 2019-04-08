@@ -82,7 +82,9 @@ export function create() {
   async function onExecuteCommand(params: ExecuteCommandParams) {
     try {
       const edit = fixerService.createEdit(params)
-      await connection.workspace.applyEdit(edit)
+      if (edit) {
+        await connection.workspace.applyEdit(edit)
+      }
     } catch (e) {
       logger.error('Error creating edit. ' + e.message + '\n' + e.stack)
     }

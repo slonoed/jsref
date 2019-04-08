@@ -1,3 +1,4 @@
+import * as jscodeshift from 'jscodeshift'
 import fixer from '../explicit-return-to-implicit'
 import * as range from '../../range'
 import {createBuildFunction} from './test-utils'
@@ -18,8 +19,16 @@ describe('javascript', () => {
 
   it('do not work on empty return', () => {
     const source = '() => { return }'
-    const r = buildEditResponse(source, range.create(1, 6, 1, 6))
 
-    expect(r).toBe(null)
+    const api = jscodeshift.withParser('babylon')
+    const params = {
+      j: api,
+      ast: api(source),
+      selection: range.create(1, 6, 1, 6),
+      logger: console,
+    }
+    const action = fixer.suggestCodeAction(params)
+
+    expect(action).toEqual(null)
   })
 })

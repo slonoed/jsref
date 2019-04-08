@@ -1,7 +1,7 @@
 import * as Range from './range'
 import * as Position from './pos'
 import {TextEdit} from 'vscode-languageserver'
-import {Printable, JSCodeshift, Node, ASTNode} from 'jscodeshift'
+import {Printable, JSCodeshift, ASTNode} from 'jscodeshift'
 
 export type t = {
   readonly range: Range.t
@@ -27,6 +27,9 @@ export function del(range: Range.t): t {
 
 export function replaceNode(j: JSCodeshift, oldNode: Printable, newNode: ASTNode): t {
   const {loc} = oldNode
+  if (!loc) {
+    throw new Error('old node should have location')
+  }
   return replace(
     Range.create(loc.start.line, loc.start.column, loc.end.line, loc.end.column),
     j(newNode).toSource()

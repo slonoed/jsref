@@ -14,7 +14,7 @@ const fixer: Fixer<Data> = {
     const collection = ast.find(
       j.ArrowFunctionExpression,
       (n: jscodeshift.ArrowFunctionExpression) => {
-        return Range.isInside(params.selection, n.loc) && j.Expression.check(n.body)
+        return n.loc && Range.isInside(params.selection, n.loc) && j.Expression.check(n.body)
       }
     )
 
@@ -23,6 +23,9 @@ const fixer: Fixer<Data> = {
     }
 
     const node = collection.nodes()[0]
+    if (!node.loc) {
+      return null
+    }
 
     return {
       title: `Use explicit return`,
@@ -33,6 +36,9 @@ const fixer: Fixer<Data> = {
     const {data, ast, j} = params
 
     const node = Ast.findFirstNode(ast, j.ArrowFunctionExpression, n => Ast.isOnPosition(n, data))
+    if (!node) {
+      return null
+    }
 
     const body = node.body
     if (j.BlockStatement.check(body)) {

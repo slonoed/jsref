@@ -12,6 +12,7 @@ const fixer: Fixer<Data> = {
 
     const node = Ast.findFirstNode(ast, j.CallExpression, n => {
       return (
+        n.loc !== null &&
         Range.isInside(params.selection, n.loc) &&
         j.MemberExpression.check(n.callee) &&
         j.Identifier.check(n.callee.object) &&
@@ -21,7 +22,7 @@ const fixer: Fixer<Data> = {
       )
     })
 
-    if (!node) {
+    if (!node || !node.loc) {
       return null
     }
 
@@ -34,6 +35,10 @@ const fixer: Fixer<Data> = {
     const {data, ast, j} = params
 
     const node = Ast.findFirstNode(ast, j.CallExpression, n => Ast.isOnPosition(n, data))
+
+    if (!node) {
+      return null
+    }
 
     const id = node.callee
     const newNode = j.identifier('it')
