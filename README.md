@@ -135,7 +135,7 @@ Add text from clipboard to the tap repo
 
 ## Contributing
 
-You can easily contribute by creating new kinds of refactoring. A good example can be found [fixer-example][here]. To avoid duplication, create [new issue][an issue] first.
+You can easily contribute by creating new kinds of refactoring. A good example can be found [here][fixer-example]. To avoid duplication, create [an issue][new-issue] first.
 
 [js-refactor]: https://github.com/cmstead/js-refactor/blob/master/package.json
 [babylon]: https://github.com/babel/babel/tree/master/packages/babylon
