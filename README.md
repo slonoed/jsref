@@ -149,5 +149,5 @@ You can easily contribute by creating new kinds of refactoring. A good example c
 [issue-atom]: https://github.com/slonoed/jsref/issues/3
 [issue-emacs]: https://github.com/slonoed/jsref/issues/10
 [issue-sublime]: https://github.com/slonoed/jsref/issues/7
-[fixer-example]: https://github.com/slonoed/jsref/blob/master/src/fixes/implicit-return-to-explicit.js
+[fixer-example]: https://github.com/slonoed/jsref/blob/master/src/fixers/implicit-return-to-explicit.ts
 [vscode-jsref-marketplace]: https://marketplace.visualstudio.com/items?itemName=slonoed.jsref
