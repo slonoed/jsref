@@ -131,6 +131,12 @@ make npm-publish
 make brew-publish
 ```
 
+### Release vscode extension
+
+```
+make vscode-publis
+```
+
 ## Contributing
 
 You can easily contribute by creating new kinds of refactoring. A good example can be found [here][fixer-example]. To avoid duplication, create [an issue][new-issue] first.
