@@ -1,3 +1,5 @@
-const hello = () => { return hell() }
+import r from 'r-dom'
 
-const a = z ? b : x
+const A = () => {
+  return r.div({prop: 1}, ['heello'])
+}

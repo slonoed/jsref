@@ -49,3 +49,7 @@ export function isAfterOrSame(a: t, b: t): boolean {
 export function isWithin(a: t, start: t, end: t): boolean {
   return isAfter(a, start) && isBefore(a, end)
 }
+
+export function nextLine(a: t): t {
+  return create(a.line + 1, 0)
+}

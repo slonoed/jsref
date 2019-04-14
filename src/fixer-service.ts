@@ -105,11 +105,13 @@ export default class FixerService {
       return null
     }
 
+    const patches = edit instanceof Array ? edit : [edit]
+
     return {
       label: params.command,
       edit: {
         changes: {
-          [uri]: [Patch.toTextEdit(edit)],
+          [uri]: patches.map(Patch.toTextEdit),
         },
       },
     }

@@ -3,12 +3,16 @@ import {Collection} from 'jscodeshift/src/Collection'
 import * as Range from './range'
 import * as Patch from './patch'
 import {Logger} from './logger'
+import {pathExists} from 'fs-extra'
 
 export interface File extends jscodeshift.Node {
   type: string
   program: jscodeshift.Program
   name: string | null
 }
+
+export type AstRoot = Collection<File>
+
 export type SuggestActionParams = {
   j: jscodeshift.JSCodeshift
   ast: Collection<File>
@@ -22,12 +26,12 @@ export type SuggestActionResult<T> = {
 }
 
 export type CreateEditParams<T> = {
-  ast: Collection<File>
+  ast: AstRoot
   j: jscodeshift.JSCodeshift
   data: T
 }
 
-export type CreateEditResult = Patch.t
+export type CreateEditResult = Patch.t | Patch.t[]
 
 export interface Fixer<T> {
   suggestCodeAction(params: SuggestActionParams): SuggestActionResult<T> | null

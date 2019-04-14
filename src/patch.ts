@@ -18,9 +18,38 @@ export function toTextEdit(patch: t): TextEdit {
 export function replace(range: Range.t, newText: string): t {
   return {range, newText}
 }
-export function insert(position: Position.t, newText: string): t {
-  return {range: {start: position, end: position}, newText}
+
+export function insert(j: JSCodeshift, position: Position.t, newNode: ASTNode): t {
+  return {range: {start: position, end: position}, newText: j(newNode).toSource()}
 }
+
+type InsertLineConfig = {
+  before?: number
+  after?: number
+}
+
+export function insertLine(
+  j: JSCodeshift,
+  position: Position.t,
+  newNode: ASTNode,
+  config?: InsertLineConfig
+): t {
+  let beforeSym = '\n'
+  let afterSym = '\n'
+  if (config) {
+    if (config.after !== undefined) {
+      afterSym = afterSym.repeat(config.after)
+    }
+    if (config.before !== undefined) {
+      beforeSym = beforeSym.repeat(config.before)
+    }
+  }
+  return {
+    range: {start: position, end: position},
+    newText: beforeSym + j(newNode).toSource() + afterSym,
+  }
+}
+
 export function del(range: Range.t): t {
   return {range, newText: ''}
 }
