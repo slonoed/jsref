@@ -1,3 +1,3 @@
-const a = () => {
-  return 1
-}
+const hello = () => { return hell() }
+
+const a = z ? b : x

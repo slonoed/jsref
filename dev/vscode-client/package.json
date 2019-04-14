@@ -1,34 +1,20 @@
 {
-  "name": "lsp-sample-client",
-  "description": "VSCode part of a language server",
-  "author": "Microsoft Corporation",
-  "license": "MIT",
-  "version": "0.0.1",
-  "publisher": "vscode",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Microsoft/vscode-extension-samples"
-  },
-  "engines": {
-    "vscode": "^1.26.0"
-  },
-  "scripts": {
-    "update-vscode": "vscode-install",
-    "postinstall": "vscode-install"
-  },
-  "dependencies": {
-    "vscode-languageclient": "^5.1.0-next.9"
-  },
-  "main": "build/extension",
-  "devDependencies": {
-    "vscode": "^1.1.21",
-    "@types/ws": "^6.0.0"
-  },
+  "name": "jsref_dev",
+  "description": "JavaScript refactoring language server (dev)",
+  "version": "1.0.7",
+  "publisher": "slonoed",
+  "author": "Dmitry Manannikov <email@slonoed.net> (https://slonoed.net/)",
+  "license": "WTFPL",
+  "repository": "https://github.com/slonoed/jsref",
+  "main": "./extension.js",
+  "categories": [
+    "Programming Languages"
+  ],
   "contributes": {
     "commands": [
       {
-        "command": "languageServerExample.restart",
-        "title": "Restart lang server"
+        "command": "jsrefdev.restart",
+        "title": "Restart jsref lang server"
       }
     ]
   },
@@ -37,5 +23,11 @@
     "onLanguage:javascriptreact",
     "onLanguage:typescript",
     "onLanguage:typescriptreact"
-  ]
+  ],
+  "dependencies": {
+    "vscode-languageclient": "^5.3.0-next.3"
+  },
+  "engines": {
+    "vscode": "^1.33.0"
+  }
 }
