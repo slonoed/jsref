@@ -16,6 +16,17 @@ export function connect(input: Readable, output: Writable): t {
   } catch (e) {
     throw new Error(`Can't connect to LSP Inspector on port ${port}`)
   }
+
+  socket.addEventListener('error', event => {
+    if (event.error) {
+      if (event.error.code === 'ECONNREFUSED') {
+        throw new Error(`Can't connect to LSP Inspector on port ${port}`)
+      }
+      throw event.error
+    }
+    throw new Error(`Uknown error while connecting to inspector on port ${port}`)
+  })
+
   const wrappedInput = createLogableStream(input, socket, msg =>
     msg.id ? 'send-request' : 'send-notification'
   )
