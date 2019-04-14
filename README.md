@@ -121,18 +121,15 @@ TBD
 ### Release npm package
 
 ```
-make npmpack
-cd build/npm
-npm publish
+make npm-pack
+make npm-publish
 ```
 
 ### Release brew tap (after npm release)
 
 ```
-noob @slonoed/jsref | sed 's/Slonoed//' | pbcopy
+make brew-publish
 ```
-
-Add text from clipboard to the tap repo
 
 ## Contributing
 
