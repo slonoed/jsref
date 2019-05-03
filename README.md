@@ -24,6 +24,8 @@ Experimental refactorings (can be removed in future):
 
 - Disable Jest test (add '.skip')
 - Enable Jest test (remove '.skip')
+- Add '.only' to Jest test
+- Remove '.only' from Jest test
 - Use styled component form "styletron-react"
 
 ## Installation

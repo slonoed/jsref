@@ -18,6 +18,69 @@ export type AstRoot = any
 const fixersPath = path.join(__dirname, './fixers')
 const fullPath = (fileName: string) => path.join(fixersPath, fileName)
 
+export async function filterJsFileName(fileName: string): Promise<string | null> {
+  if (!fileName.match(/\.(j|t)s$/)) {
+    return null
+  }
+  const stat = await fs.lstat(path.join(fixersPath, fileName))
+  return stat.isFile() ? fileName : null
+}
+
+export function parseFixer(fileName: string): [string, Fixer<any>] | null {
+  let fixer
+  try {
+    fixer = require(fullPath(fileName))
+  } catch (e) {
+    throw new Error("Can't load " + fileName + ' fixer')
+  }
+
+  if (!fixer) {
+    throw new Error('No export from fixer: ' + fileName)
+  }
+
+  // Handle es6 modules
+  if (fixer.default) {
+    fixer = fixer.default
+  }
+  const {suggestCodeAction, createEdit}: Fixer<any> = fixer
+
+  if (!suggestCodeAction || typeof suggestCodeAction !== 'function') {
+    throw new Error('Fixer ' + fileName + ' should implement suggestCodeAction')
+  }
+
+  if (!createEdit || typeof createEdit !== 'function') {
+    throw new Error('Fixer ' + fileName + ' should implement createEdit')
+  }
+
+  const name = path.basename(fileName, path.extname(fileName))
+
+  return [
+    name,
+    {
+      suggestCodeAction: suggestCodeAction,
+      createEdit: createEdit,
+    },
+  ]
+}
+
+export async function loadFixers(fixersPath: string): Promise<Map<string, Fixer<any>>> {
+  const allFileNames: string[] = await fs.readdir(fixersPath)
+  const names = await Promise.all(allFileNames.map(filterJsFileName))
+
+  const fixers = new Map()
+  names
+    .filter(f => f)
+    .map(n => {
+      return parseFixer(n as string)
+    })
+    .filter(f => f)
+    .forEach(([id, fixer]) => {
+      fixers.set(id, fixer)
+    })
+
+  return fixers
+}
+
 export default class FixerService {
   private fixers: Map<string, Fixer<any>>
   private astService: AstService
@@ -119,26 +182,25 @@ export default class FixerService {
 
   private async loadFixers(): Promise<Map<string, Fixer<any>>> {
     const allFileNames: string[] = await fs.readdir(fixersPath)
-    const names = await Promise.all(allFileNames.map(f => this.filterJsFileName(f)))
+    const names = await Promise.all(allFileNames.map(filterJsFileName))
 
     const fixers = new Map()
     names
       .filter(f => f)
-      .map(n => this.parseFixer(n as string))
+      .map(n => {
+        try {
+          return parseFixer(n as string)
+        } catch (e) {
+          this.logger.error(e.message)
+          return null
+        }
+      })
       .filter(f => f)
       .forEach(([id, fixer]) => {
         fixers.set(id, fixer)
       })
 
     return fixers
-  }
-
-  private async filterJsFileName(fileName: string): Promise<string | null> {
-    if (!fileName.match(/\.js$/)) {
-      return null
-    }
-    const stat = await fs.lstat(path.join(fixersPath, fileName))
-    return stat.isFile() ? fileName : null
   }
 
   private parseFixer(fileName: string): [string, Fixer<any>] | null {

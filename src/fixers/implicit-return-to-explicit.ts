@@ -45,9 +45,13 @@ const fixer: Fixer<Data> = {
       return null
     }
 
-    const newNode = j.blockStatement([j.returnStatement(body)])
+    const newNode = j.arrowFunctionExpression(
+      node.params,
+      j.blockStatement([j.returnStatement(body)]),
+      false
+    )
 
-    return Patch.replaceNode(j, body, newNode)
+    return Patch.replaceNode(j, node, newNode)
   },
 }
 

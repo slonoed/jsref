@@ -1,0 +1,6 @@
+name: simple case
+column: 1
+---
+it('hello', () => {})
+---
+it.only('hello', () => {})

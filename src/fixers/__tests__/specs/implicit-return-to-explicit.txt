@@ -1,0 +1,19 @@
+name: simple case
+column: 21
+---
+const foo = () => hello()
+---
+const foo = () => {
+    return hello();
+}
+
+
+========================
+name: wrapped object
+column: 18
+---
+const foo = () => ({a: 1})
+---
+const foo = () => {
+    return {a: 1};
+}
