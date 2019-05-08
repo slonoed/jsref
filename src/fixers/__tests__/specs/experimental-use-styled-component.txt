@@ -1,0 +1,22 @@
+DOESNT WORK IN VSCODE
+WRONG ORDER OF INSERTING
+/*
+ * Renders user avatar by email.
+ * Has all props image has
+ */
+import r from 'r-dom'
+import md5 from 'md5'
+
+export default function Avatar({email, style, ...props}) {
+  const hash = md5(email)
+
+  return r.img({
+    src: `https://secure.gravatar.com/avatar/${hash}?d=mm`,
+    style: {
+      borderRadius: '1000px',
+      ...style,
+    },
+    ...props,
+  })
+}
+
