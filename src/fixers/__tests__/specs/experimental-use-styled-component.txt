@@ -1,0 +1,77 @@
+name: no import
+line: 4
+column: 12
+---
+import r from 'r-dom'
+
+const A = () => {
+  return r.div()
+}
+---
+import r from 'r-dom'
+import { styled } from "styletron-react";
+
+const StyledDiv = styled("div", {});
+
+const A = () => {
+  return r(StyledDiv)
+}
+===
+name: with styletron import
+line: 5
+column: 12
+---
+import r from 'r-dom'
+import {styled} from 'styletron-react'
+
+const A = () => {
+  return r.div()
+}
+---
+import r from 'r-dom'
+import {styled} from 'styletron-react'
+
+const StyledDiv = styled("div", {});
+
+const A = () => {
+  return r(StyledDiv)
+}
+===
+name: with different rdom default name
+line: 5
+column: 12
+---
+import piu from 'r-dom'
+import {styled} from 'styletron-react'
+
+const A = () => {
+  return piu.div()
+}
+---
+import piu from 'r-dom'
+import {styled} from 'styletron-react'
+
+const StyledDiv = styled("div", {});
+
+const A = () => {
+  return piu(StyledDiv)
+}
+===
+name: with code tag
+line: 4
+column: 12
+---
+import r from 'r-dom'
+
+const A = () => {
+  return r.code()
+}
+---
+import r from 'r-dom'
+import { styled } from "styletron-react";
+
+const StyledCode = styled("code", {});
+
+const A = () => {
+  return r(StyledCode)
+}

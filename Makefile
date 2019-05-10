@@ -1,10 +1,10 @@
+CURRENT_DIR = $(shell pwd)
 
 compile-vscode:
 	tsc --build dev/vscode-client/tsconfig.json
 
 run-vscode:
-	make compile-vscode
-	code --extensionDevelopmentPath /Users/slonoed/_repos/refactor/all/dev/vscode-client/ --log trace
+	code --extensionDevelopmentPath ${CURRENT_DIR}/dev/vscode-client/ --log trace dev/playground
 
 test:
 	jest

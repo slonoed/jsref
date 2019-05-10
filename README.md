@@ -112,11 +112,20 @@ _help needed_
 
 ## Plans
 
-- More refactorings! If you need some speciefic, create an [issue][new-issue]
+- More refactorings! If you need some specific, create an [issue][new-issue]
 
 ## Development
 
-TBD
+Install deps `npm i`
+
+### Debug VScode extension
+
+Install LSP Inspector.
+Run debug version with extension
+
+```
+make run-vscode
+```
 
 ## Deploy
 

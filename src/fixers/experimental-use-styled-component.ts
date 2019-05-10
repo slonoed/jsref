@@ -142,6 +142,20 @@ const fixer: Fixer<Data> = {
         ? Position.create(lastImport.loc.end.line, lastImport.loc.end.column)
         : Position.create(1, 0)
 
+    const topInserts: any = ['\n']
+
+    const shouldInsertStyledImport = !hasStyledImport(j, ast)
+    if (shouldInsertStyledImport) {
+      const styledImport = j.importDeclaration(
+        [j.importSpecifier(j.identifier('styled'))],
+        j.literal('styletron-react')
+      )
+      topInserts.push(styledImport)
+      topInserts.push('\n')
+    }
+
+    topInserts.push('\n')
+
     const styledComponentDeclaration = j.variableDeclaration('const', [
       j.variableDeclarator(
         j.identifier(componentName),
@@ -149,21 +163,12 @@ const fixer: Fixer<Data> = {
       ),
     ])
 
-    const shouldInsertStyledImport = !hasStyledImport(j, ast)
+    topInserts.push(styledComponentDeclaration)
+
 
     patches.push(
-      Patch.insertLine(j, declarationStart, styledComponentDeclaration, {
-        before: shouldInsertStyledImport ? 1 : 2,
-      })
+      Patch.insert(j, declarationStart, topInserts)
     )
-
-    if (shouldInsertStyledImport) {
-      const styledImport = j.importDeclaration(
-        [j.importSpecifier(j.identifier('styled'))],
-        j.literal('styletron-react')
-      )
-      patches.push(Patch.insertLine(j, declarationStart, styledImport))
-    }
 
     return patches
   },

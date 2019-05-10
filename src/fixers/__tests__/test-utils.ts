@@ -125,7 +125,7 @@ function positionToOffset(t: string, p: position.t): number {
   const rows = t.split('\n')
   let offset = 0
   for (let i = 0; i < p.line - 1; i++) {
-    offset += rows[i].length
+    offset += rows[i].length + 1
   }
   offset += p.column
 

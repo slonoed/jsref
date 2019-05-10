@@ -19,34 +19,16 @@ export function replace(range: Range.t, newText: string): t {
   return {range, newText}
 }
 
-export function insert(j: JSCodeshift, position: Position.t, newNode: ASTNode): t {
-  return {range: {start: position, end: position}, newText: j(newNode).toSource()}
-}
-
-type InsertLineConfig = {
-  before?: number
-  after?: number
-}
-
-export function insertLine(
+export function insert(
   j: JSCodeshift,
   position: Position.t,
-  newNode: ASTNode,
-  config?: InsertLineConfig
+  entries: Array<ASTNode | string>,
 ): t {
-  let beforeSym = '\n'
-  let afterSym = '\n'
-  if (config) {
-    if (config.after !== undefined) {
-      afterSym = afterSym.repeat(config.after)
-    }
-    if (config.before !== undefined) {
-      beforeSym = beforeSym.repeat(config.before)
-    }
-  }
+  const newText = entries.map(n => typeof n === 'string' ? n :j(n).toSource()).join('')
+
   return {
     range: {start: position, end: position},
-    newText: beforeSym + j(newNode).toSource() + afterSym,
+    newText
   }
 }
 
