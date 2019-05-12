@@ -138,6 +138,13 @@ make npm-publish
 
 ### Release brew tap (after npm release)
 
+Install **noob** package
+```
+brew install zmwangx/npm-noob/noob
+```
+
+Publishing
+
 ```
 make brew-publish
 ```
