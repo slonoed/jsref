@@ -23,8 +23,9 @@ compile: clean
 
 
 .PHONE: npm-pack
-npm-pack: compile
+npm-pack: compile README.md
 	mkdir -p build/npm
+	cp README.md build/npm/README.md
 	cp -r build/js build/npm/src
 	chmod +x build/npm/src/bin.js
 	cat package.json | jq '. | del(.engines, .scripts, .devDependencies) | .bin += {"jsref": "./src/bin.js"}' > build/npm/package.json
