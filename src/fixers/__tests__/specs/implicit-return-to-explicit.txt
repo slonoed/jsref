@@ -17,3 +17,13 @@ const foo = () => ({a: 1})
 const foo = () => {
     return {a: 1};
 }
+
+========================
+name: async funcrion
+column: 22
+---
+const foo = async () => hello()
+---
+const foo = async () => {
+    return hello();
+}

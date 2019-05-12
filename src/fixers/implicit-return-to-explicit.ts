@@ -50,6 +50,7 @@ const fixer: Fixer<Data> = {
       j.blockStatement([j.returnStatement(body)]),
       false
     )
+    newNode.async = node.async
 
     return Patch.replaceNode(j, node, newNode)
   },
