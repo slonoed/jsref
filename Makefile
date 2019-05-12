@@ -49,11 +49,14 @@ vscode-publish: vscode
 	cd build/vscode-extension && vsce publish
 
 .PHONY: vscode
-vscode: build/vscode-extension/extension.js build/vscode-extension/package.json build/vscode-extension/README.md
+vscode: build/vscode-extension/extension.js build/vscode-extension/package.json build/vscode-extension/README.md build/vscode-extension/icon.png
 	cd build/vscode-extension && npm i
 
 build/vscode-extension:
 	mkdir -p build/vscode-extension
+
+build/vscode-extension/icon.png: build/vscode-extension
+	cp vscode-extension/icon.png build/vscode-extension/icon.png
 
 build/vscode-extension/README.md: build/vscode-extension vscode-extension/README.md
 	cp vscode-extension/README.md build/vscode-extension/README.md
