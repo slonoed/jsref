@@ -75,3 +75,26 @@ const StyledCode = styled("code", {});
 const A = () => {
   return r(StyledCode)
 }
+===
+name: apply to inner element
+line: 5
+column: 12
+---
+import r from 'r-dom'
+
+const A = () => {
+  return r.div([
+    r.span('hello')
+  ])
+}
+---
+import r from 'r-dom'
+import { styled } from "styletron-react";
+
+const StyledSpan = styled("span", {});
+
+const A = () => {
+  return r.div([
+    r(StyledSpan, 'hello')
+  ])
+}

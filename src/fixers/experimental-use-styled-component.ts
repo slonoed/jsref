@@ -83,7 +83,7 @@ const fixer: Fixer<Data> = {
 
     const rDomVar = getDefaultImportName(j, ast, 'r-dom')
 
-    const node = Ast.findFirstNode(
+    const node = Ast.findLastNode(
       ast,
       j.CallExpression,
       n =>
@@ -109,7 +109,7 @@ const fixer: Fixer<Data> = {
   createEdit(params) {
     const {data, ast, j} = params
 
-    const node = Ast.findFirstNode(ast, j.CallExpression, n => Ast.isOnPosition(n, data))
+    const node = Ast.findLastNode(ast, j.CallExpression, n => Ast.isOnPosition(n, data))
     if (!node) {
       return null
     }
