@@ -88,7 +88,7 @@ const fixer: Fixer<Data> = {
     }
 
     return {
-      title: `Group imports`,
+      title: `Group and sort imports`,
       data: null,
     }
   },
@@ -106,7 +106,7 @@ const fixer: Fixer<Data> = {
       if (node.loc) {
         const loc: Range.t = {
           start: node.loc.start,
-          end: {line: node.loc.end.line, column: node.loc.end.column + 1},
+          end: {line: node.loc.end.line + 1, column: 0},
         }
         patches.push(Patch.del(loc))
       }
@@ -125,19 +125,15 @@ const fixer: Fixer<Data> = {
 
     patches.reverse()
 
-    patches.push(
-      Patch.insert(j, Position.create(1, 0), [
-        joinImports(j, systemImports),
-        '\n',
-        '\n',
-        joinImports(j, packageImports),
-        '\n',
-        '\n',
-        joinImports(j, sourceImports),
-        '\n',
-        '\n',
-      ])
-    )
+    const newText = [
+      joinImports(j, systemImports),
+      joinImports(j, packageImports),
+      joinImports(j, sourceImports),
+    ]
+      .filter(a => a)
+      .join('\n\n')
+
+    patches.push(Patch.insert(j, Position.create(1, 0), [newText, '\n']))
 
     return patches
   },
