@@ -1,6 +1,6 @@
 import * as LangServer from 'vscode-languageserver'
 
-// Line is 1-based, columen is 0-based
+// Line is 1-based, column is 0-based
 export type t = {
   readonly line: number
   readonly column: number

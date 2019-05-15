@@ -27,6 +27,7 @@ Experimental refactorings (can be removed in future):
 - Add '.only' to Jest test
 - Remove '.only' from Jest test
 - Use styled component form "styletron-react"
+- Group imports
 
 ## Installation
 

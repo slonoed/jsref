@@ -69,7 +69,7 @@ export function testSpec<T>(fixer: Fixer<T>, specSourceText: string) {
         run(spec.name, () => {
           const edits = buildEditResponse(spec.source, spec.range)
           const result = applyEdits(spec.source, edits)
-          expect(result).toBe(spec.target)
+          expect(result.trimRight()).toBe(spec.target.trimRight())
         })
       })
   })
@@ -128,7 +128,6 @@ function positionToOffset(t: string, p: position.t): number {
     offset += rows[i].length + 1
   }
   offset += p.column
-
   return offset
 }
 

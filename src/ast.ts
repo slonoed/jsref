@@ -12,7 +12,7 @@ export function firstNode<TNode>(c: Collection<TNode>): null | TNode {
 export function find<T>(
   ast: Collection<File>,
   type: Type<T>,
-  filter: (n: T) => boolean
+  filter?: (n: T) => boolean
 ): Collection<T> {
   return ast.find(type, filter)
 }

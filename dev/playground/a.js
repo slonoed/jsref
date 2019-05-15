@@ -1,5 +1,4 @@
-import r from 'r-dom'
-
-const A = () => {
-  return r.div({prop: 1}, ['heello'])
-}
+import {get} from 'lodash'
+import {Dict} from 'interfaces'
+import {Something} from './constants'
+import zlib from 'zlib'

@@ -1,0 +1,15 @@
+name: basic
+column: 1
+---
+import { get } from 'lodash'
+import { Dict } from 'interfaces'
+import { Something } from './constants'
+import zlib from 'zlib'
+
+---
+import zlib from 'zlib'
+
+import { Dict } from 'interfaces'
+import { get } from 'lodash'
+
+import { Something } from './constants'
