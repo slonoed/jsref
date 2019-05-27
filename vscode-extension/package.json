@@ -1,7 +1,7 @@
 {
   "name": "jsref",
   "description": "JavaScript refactoring language server",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "publisher": "slonoed",
   "author": "Dmitry Manannikov <email@slonoed.net> (https://slonoed.net/)",
   "license": "WTFPL",
