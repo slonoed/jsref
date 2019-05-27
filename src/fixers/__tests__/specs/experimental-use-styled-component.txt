@@ -98,3 +98,35 @@ const A = () => {
     r(StyledSpan, 'hello')
   ])
 }
+===
+name: extract from selfclosing JSX tag
+line: 2
+column: 17
+---
+const A = () => {
+  return <img style={{color: 'red'}} />
+}
+---
+import { styled } from "styletron-react";
+
+const StyledImg = styled("img", {});
+
+const A = () => {
+  return <StyledImg />
+}
+===
+name: extract from JSX tag
+line: 2
+column: 17
+---
+const A = () => {
+  return <div style={{color: 'red'}}>hello</div>
+}
+---
+import { styled } from "styletron-react";
+
+const StyledDiv = styled("div", {});
+
+const A = () => {
+  return <StyledDiv>hello</StyledDiv>
+}

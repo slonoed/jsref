@@ -8,8 +8,13 @@ import astTypes from 'recast/lib/types'
 import {Collection} from 'jscodeshift/src/Collection'
 import {capitalize} from '../text-utils'
 import {pathExists} from 'fs-extra'
+import {jsxElement} from '@babel/types'
 
-type Data = Position.t
+type NodeType = 'jsx' | 'rdom'
+type Data = {
+  start: Position.t
+  type: NodeType
+}
 
 function hasStyledImport(j: jscodeshift.JSCodeshift, ast: AstRoot): boolean {
   const styletronSpecifiers = getImportSpecifiers(j, ast, 'styletron-react')
@@ -77,6 +82,10 @@ function getTagName(j: jscodeshift.JSCodeshift, node: jscodeshift.CallExpression
     : null
 }
 
+function isLowerCase(word: string): boolean {
+  return word === word.toLowerCase()
+}
+
 const fixer: Fixer<Data> = {
   suggestCodeAction(params) {
     const {j, ast} = params
@@ -95,31 +104,114 @@ const fixer: Fixer<Data> = {
         j.Identifier.check(n.callee.property)
     )
 
-    if (!node || !node.loc) {
+    if (node && node.loc) {
+      const tag = getTagName(j, node)
+
+      return {
+        title: `Extract "${tag}" to styled component`,
+        data: {start: node.loc.start, type: 'rdom'},
+      }
+    }
+
+    const jsxElement = Ast.findLastNode(
+      ast,
+      j.JSXElement,
+      n =>
+        n.loc !== null &&
+        Range.isInside(params.selection, n.loc) &&
+        j.JSXIdentifier.check(n.openingElement.name) &&
+        isLowerCase(n.openingElement.name.name)
+    )
+
+    if (!jsxElement || !jsxElement.loc) {
       return null
     }
 
-    const tag = getTagName(j, node)
+    const jsxNode = jsxElement.openingElement
 
-    return {
-      title: `Extract "${tag}" to styled component`,
-      data: node.loc.start,
+    if (jsxNode && jsxNode.loc && j.JSXIdentifier.check(jsxNode.name)) {
+      const tag = jsxNode.name.name
+
+      return {
+        title: `Extract "${tag}" to styled component`,
+        data: {start: jsxElement.loc.start, type: 'jsx'},
+      }
     }
+
+    return null
   },
   createEdit(params) {
     const {data, ast, j} = params
 
-    const node = Ast.findLastNode(ast, j.CallExpression, n => Ast.isOnPosition(n, data))
-    if (!node) {
-      return null
+    if (data.type === 'rdom') {
+      const node = Ast.findLastNode(ast, j.CallExpression, n => Ast.isOnPosition(n, data.start))
+      if (!node) {
+        return null
+      }
+
+      const rDomVar = getDefaultImportName(j, ast, 'r-dom')
+      if (!rDomVar) {
+        return null
+      }
+
+      const tag = getTagName(j, node)
+
+      if (!tag) {
+        return null
+      }
+
+      const componentName = 'Styled' + capitalize(tag)
+
+      const patches = []
+
+      const newNode = j.callExpression(j.identifier(rDomVar), [
+        j.identifier(componentName),
+        ...node.arguments,
+      ])
+
+      patches.push(Patch.replaceNode(j, node, newNode))
+
+      const lastImport = Ast.findLastNode(ast, j.ImportDeclaration, () => true)
+      const declarationStart =
+        lastImport && lastImport.loc
+          ? Position.create(lastImport.loc.end.line, lastImport.loc.end.column)
+          : Position.create(1, 0)
+
+      const topInserts: any = ['\n']
+
+      const shouldInsertStyledImport = !hasStyledImport(j, ast)
+      if (shouldInsertStyledImport) {
+        const styledImport = j.importDeclaration(
+          [j.importSpecifier(j.identifier('styled'))],
+          j.literal('styletron-react')
+        )
+        topInserts.push(styledImport)
+        topInserts.push('\n')
+      }
+
+      topInserts.push('\n')
+
+      const styledComponentDeclaration = j.variableDeclaration('const', [
+        j.variableDeclarator(
+          j.identifier(componentName),
+          j.callExpression(j.identifier('styled'), [j.literal(tag), j.objectExpression([])])
+        ),
+      ])
+
+      topInserts.push(styledComponentDeclaration)
+
+      patches.push(Patch.insert(j, declarationStart, topInserts))
+
+      return patches
     }
 
-    const rDomVar = getDefaultImportName(j, ast, 'r-dom')
-    if (!rDomVar) {
+    const elementNode = Ast.findLastNode(ast, j.JSXElement, n => Ast.isOnPosition(n, data.start))
+    if (!elementNode) {
       return null
     }
+    const node = elementNode.openingElement
 
-    const tag = getTagName(j, node)
+    const tag = j.JSXIdentifier.check(node.name) && node.name.name
 
     if (!tag) {
       return null
@@ -129,10 +221,21 @@ const fixer: Fixer<Data> = {
 
     const patches = []
 
-    const newNode = j.callExpression(j.identifier(rDomVar), [
-      j.identifier(componentName),
-      ...node.arguments,
-    ])
+    const newNode = Ast.cloneNode(j, node)
+    newNode.name = j.jsxIdentifier(componentName)
+    newNode.attributes = newNode.attributes.filter(
+      attr =>
+        !(
+          j.JSXAttribute.check(attr) &&
+          j.JSXIdentifier.check(attr.name) &&
+          attr.name.name === 'style'
+        )
+    )
+    if (!node.selfClosing && elementNode.closingElement) {
+      const newNode = Ast.cloneNode(j, elementNode.closingElement)
+      newNode.name = j.jsxIdentifier(componentName)
+      patches.push(Patch.replaceNode(j, elementNode.closingElement, newNode))
+    }
 
     patches.push(Patch.replaceNode(j, node, newNode))
 
@@ -142,7 +245,7 @@ const fixer: Fixer<Data> = {
         ? Position.create(lastImport.loc.end.line, lastImport.loc.end.column)
         : Position.create(1, 0)
 
-    const topInserts: any = ['\n']
+    const topInserts: any = lastImport ? ['\n'] : []
 
     const shouldInsertStyledImport = !hasStyledImport(j, ast)
     if (shouldInsertStyledImport) {
@@ -165,10 +268,10 @@ const fixer: Fixer<Data> = {
 
     topInserts.push(styledComponentDeclaration)
 
+    topInserts.push('\n')
+    topInserts.push('\n')
 
-    patches.push(
-      Patch.insert(j, declarationStart, topInserts)
-    )
+    patches.push(Patch.insert(j, declarationStart, topInserts))
 
     return patches
   },
