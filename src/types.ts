@@ -13,11 +13,16 @@ export interface File extends jscodeshift.Node {
 
 export type AstRoot = Collection<File>
 
+type Config = {
+  packages: string[]
+}
+
 export type SuggestActionParams = {
   j: jscodeshift.JSCodeshift
   ast: Collection<File>
   selection: Range.t
   logger: Logger
+  config?: Config
 }
 
 export type SuggestActionResult<T> = {

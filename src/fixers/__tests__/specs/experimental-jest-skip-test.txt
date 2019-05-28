@@ -1,0 +1,6 @@
+name: simple case
+column: 1
+---
+it("s", () => { hello(); })
+---
+it.skip("s", () => { hello(); })

@@ -28,6 +28,7 @@ export function createMultipleEditBuildFunction<T>(fixer: Fixer<T>) {
       ast: api(source),
       selection: r,
       logger: console,
+      config: {packages: []},
     }
     const action = fixer.suggestCodeAction(params)
 
@@ -67,7 +68,7 @@ export function testSpec<T>(fixer: Fixer<T>, specSourceText: string) {
       .forEach(spec => {
         const run = spec.only ? it.only : it
         run(spec.name, () => {
-          const edits = buildEditResponse(spec.source, spec.range)
+          const edits = buildEditResponse(spec.source, spec.range, spec.parser)
           const result = applyEdits(spec.source, edits)
           expect(result.trimRight()).toBe(spec.target.trimRight())
         })
@@ -81,6 +82,7 @@ type Spec = {
   source: string
   target: string
   range: range.t
+  parser: string
 }
 
 function parseIntWithDefault(s: string, def: number): number {
@@ -118,6 +120,7 @@ function parseSpec(txt: string): Spec {
     target,
     name: setup.name,
     range: range.create(line, column, endLine, endColumn),
+    parser: setup.parser || 'babylon',
   }
 }
 

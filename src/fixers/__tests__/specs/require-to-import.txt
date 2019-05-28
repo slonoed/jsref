@@ -1,0 +1,36 @@
+name: named require
+column: 15
+---
+const a = require('b')
+---
+import a from "b";
+===
+name: cursor before require
+column: 10
+---
+const a = require('b')
+---
+import a from "b";
+===
+name: unnamed require
+column: 10
+---
+require('b')
+---
+import "b";
+===
+name: named with type
+column: 29
+parser: ts
+---
+const a:number = require('b')
+---
+import a from "b";
+===
+name: named with flow type
+column: 29
+parser: flow
+---
+const a:number = require('b')
+---
+import a from "b";

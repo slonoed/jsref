@@ -119,6 +119,7 @@ export default class FixerService {
       j: jscodeshift,
       selection,
       logger: this.logger,
+      config: {packages: []},
     }
 
     const actions = []
@@ -201,46 +202,5 @@ export default class FixerService {
       })
 
     return fixers
-  }
-
-  private parseFixer(fileName: string): [string, Fixer<any>] | null {
-    let fixer
-    try {
-      fixer = require(fullPath(fileName))
-    } catch (e) {
-      this.logger.error("Can't load " + fileName + ' fixer')
-      return null
-    }
-
-    if (!fixer) {
-      this.logger.error('No export from fixer: ' + fileName)
-      return null
-    }
-
-    // Handle es6 modules
-    if (fixer.default) {
-      fixer = fixer.default
-    }
-    const {suggestCodeAction, createEdit}: Fixer<any> = fixer
-
-    if (!suggestCodeAction || typeof suggestCodeAction !== 'function') {
-      this.logger.error('Fixer ' + fileName + ' should implement suggestCodeAction')
-      return null
-    }
-
-    if (!createEdit || typeof createEdit !== 'function') {
-      this.logger.error('Fixer ' + fileName + ' should implement createEdit')
-      return null
-    }
-
-    const name = path.basename(fileName, path.extname(fileName))
-
-    return [
-      name,
-      {
-        suggestCodeAction: suggestCodeAction,
-        createEdit: createEdit,
-      },
-    ]
   }
 }

@@ -1,22 +1,14 @@
 import * as jscodeshift from 'jscodeshift'
 import fixer from '../explicit-return-to-implicit'
 import * as range from '../../range'
-import {createBuildFunction} from './test-utils'
 
-const buildEditResponse = createBuildFunction(fixer)
+import {testSpec} from './test-utils'
+
+const specText = require('./specs/explicit-return-to-implicit.txt')
+
+testSpec(fixer, specText)
 
 describe('javascript', () => {
-  it('simple', () => {
-    const source = '() => { return test() }'
-    const r = buildEditResponse(source, range.create(1, 6, 1, 6))
-
-    expect(r).toEqual({
-      newText: 'test()',
-      range: {end: {column: 23, line: 1}, start: {column: 6, line: 1}},
-      title: 'Use implicit return',
-    })
-  })
-
   it('do not work on empty return', () => {
     const source = '() => { return }'
 

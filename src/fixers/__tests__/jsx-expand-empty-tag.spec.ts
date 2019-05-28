@@ -1,6 +1,11 @@
 import fixer from '../jsx-expand-empty-tag'
 import * as range from '../../range'
 import {createBuildFunction} from './test-utils'
+import {testSpec} from './test-utils'
+
+const specText = require('./specs/jsx-expand-empty-tag.txt')
+
+testSpec(fixer, specText)
 
 const buildEditResponse = createBuildFunction(fixer)
 

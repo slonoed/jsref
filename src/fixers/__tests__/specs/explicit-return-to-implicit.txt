@@ -1,0 +1,6 @@
+name: simple
+column: 1
+---
+() => { return test() }
+---
+() => test()

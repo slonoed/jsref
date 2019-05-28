@@ -1,0 +1,6 @@
+name: simple
+column: 17
+---
+it.skip("s", () => { hello(); })
+---
+it("s", () => { hello(); })
