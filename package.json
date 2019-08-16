@@ -22,30 +22,30 @@
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.3.3",
-    "@types/fs-extra": "^5.0.5",
-    "@types/jest": "^24.0.11",
-    "@types/jscodeshift": "^0.6.0",
+    "@types/fs-extra": "^8.0.0",
+    "@types/jest": "^24.0.17",
+    "@types/jscodeshift": "^0.6.2",
     "@types/minimist": "^1.2.0",
-    "@types/node": "^11.13.4",
-    "jest": "^24.7.1",
+    "@types/node": "^12.7.2",
+    "jest": "^24.9.0",
     "jest-raw-loader": "^1.0.1",
-    "prettier": "^1.17.0",
+    "prettier": "^1.18.2",
     "ts-jest": "^24.0.2",
-    "ts-node": "^8.0.3",
-    "tslint": "^5.15.0",
-    "typescript": "^3.4.3",
-    "vscode": "^1.1.30",
+    "ts-node": "^8.3.0",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3",
+    "vscode": "^1.1.36",
     "vscode-languageclient": "^5.3.0-next.3"
   },
   "engines": {
     "vscode": "^1.32"
   },
   "dependencies": {
-    "@types/ws": "^6.0.1",
-    "fs-extra": "^7.0.1",
-    "jscodeshift": "^0.6.3",
+    "@types/ws": "^6.0.2",
+    "fs-extra": "^8.1.0",
+    "jscodeshift": "^0.6.4",
     "minimist": "^1.2.0",
     "vscode-languageserver": "^5.3.0-next.4",
-    "ws": "^6.2.1"
+    "ws": "^7.1.2"
   }
 }
