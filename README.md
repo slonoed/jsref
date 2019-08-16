@@ -19,6 +19,7 @@ Supported refactorings:
 - Convert `require` to `import`
 - Expand empty JSX tag
 - Flip ternary expression
+- Replace string literal with concatenation of strings
 
 Experimental refactorings (can be removed in future):
 

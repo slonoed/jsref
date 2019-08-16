@@ -1,0 +1,20 @@
+name: simple
+column: 2
+---
+`hello world`
+---
+"hello world"
+==========================
+name: with expression
+column: 2
+---
+`hello ${a}`
+---
+"hello " + a
+==========================
+name: with first empty string
+column: 2
+---
+`${a} test`
+---
+a + " test"
