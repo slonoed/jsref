@@ -4,3 +4,10 @@ column: 1
 () => { return test() }
 ---
 () => test()
+=============================
+name: return object
+column: 10
+---
+() => { return {a: 1} }
+---
+() => ({a: 1})

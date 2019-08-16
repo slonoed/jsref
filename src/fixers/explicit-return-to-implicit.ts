@@ -64,7 +64,12 @@ const fixer: Fixer<Data> = {
       return null
     }
 
-    return Patch.replaceNode(j, node.body, retSt.argument)
+    let returnArg = retSt.argument
+    if (j.ObjectExpression.check(returnArg)) {
+      returnArg = j.parenthesizedExpression(returnArg)
+    }
+
+    return Patch.replaceNode(j, node.body, returnArg)
   },
 }
 

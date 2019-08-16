@@ -127,6 +127,10 @@ Run debug version with extension
 make run-vscode
 ```
 
+### Debug server
+
+Run `jsbin` with `--lspi` flag and running inspector.
+
 ## Deploy
 
 ### Release npm package
@@ -139,6 +143,7 @@ make npm-publish
 ### Release brew tap (after npm release)
 
 Install **noob** package
+
 ```
 brew install zmwangx/npm-noob/noob
 ```
