@@ -4,3 +4,10 @@ column: 11
 const a = function () { return 1; }
 ---
 const a = () => { return 1; }
+============================================
+name: async function
+column: 11
+---
+const a = async function () { return 1; }
+---
+const a = async () => { return 1; }

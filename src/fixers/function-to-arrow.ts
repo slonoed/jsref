@@ -33,10 +33,11 @@ const fixer: Fixer<Data> = {
     const {data, ast, j} = params
 
     const func = Ast.findFirstNode(ast, j.FunctionExpression, n => Ast.isOnPosition(n, data))
-    if (!func) {
+    if (!func || func.generator) {
       return null
     }
     const node = j.arrowFunctionExpression(func.params, func.body, false)
+    node.async = func.async
 
     return Patch.replaceNode(j, func, node)
   },
