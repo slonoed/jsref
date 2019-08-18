@@ -159,7 +159,7 @@ make brew-publish
 ### Release vscode extension
 
 ```
-make vscode-publis
+make vscode-publish
 ```
 
 ## Contributing
