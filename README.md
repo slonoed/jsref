@@ -13,13 +13,13 @@ It uses babylon parser to parse and generate JavaScript.
 
 Supported refactorings:
 
-- Convert regular function to arrow function
 - Convert explicit return to implicit
-- Convert implicit return to explicit
-- Convert `require` to `import`
-- Expand empty JSX tag
 - Flip ternary expression
+- Convert regular function to arrow function
+- Convert implicit return to explicit
+- Expand empty JSX tag
 - Replace string literal with concatenation of strings
+- Convert `require` to `import`
 
 Experimental refactorings (can be removed in future):
 
