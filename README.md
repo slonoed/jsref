@@ -14,6 +14,7 @@ It uses babylon parser to parse and generate JavaScript.
 Supported refactorings:
 
 - Convert explicit return to implicit
+- Flip if-else
 - Flip ternary expression
 - Convert regular function to arrow function
 - Convert implicit return to explicit

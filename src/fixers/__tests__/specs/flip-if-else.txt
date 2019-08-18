@@ -1,0 +1,43 @@
+name: simple
+column: 3
+---
+if (a) {
+  b()
+} else {
+  c()
+}
+---
+if (!a) {
+  c()
+} else {
+  b()
+}
+================================
+name: with negate in test
+column: 3
+---
+if (!a) {
+  b()
+} else {
+  c()
+}
+---
+if (a) {
+  c()
+} else {
+  b()
+}
+================================
+name: with no else
+column: 3
+---
+if (!a) {
+  b()
+}
+---
+if (a) {
+    // do nothing
+
+} else {
+  b()
+}
