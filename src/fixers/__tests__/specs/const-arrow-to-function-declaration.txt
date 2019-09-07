@@ -1,0 +1,22 @@
+name: no arguments
+column: 18
+---
+const a = () => { return 1; }
+---
+function a() { return 1; }
+================================
+name: async
+column: 18
+---
+const a = async () => { return 1; }
+---
+async function a() { return 1; }
+================================
+name: no body
+column: 18
+---
+const a = async () => 1
+---
+async function a() {
+    return 1;
+}
