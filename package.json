@@ -21,31 +21,31 @@
     "test": "sh ./scripts/e2e.sh"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.3.3",
+    "@babel/preset-typescript": "^7.6.0",
     "@types/fs-extra": "^8.0.0",
-    "@types/jest": "^24.0.17",
+    "@types/jest": "^24.0.18",
     "@types/jscodeshift": "^0.6.2",
     "@types/minimist": "^1.2.0",
-    "@types/node": "^12.7.2",
+    "@types/node": "^12.7.4",
     "jest": "^24.9.0",
     "jest-raw-loader": "^1.0.1",
     "prettier": "^1.18.2",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.3.0",
-    "tslint": "^5.18.0",
-    "typescript": "^3.5.3",
+    "tslint": "^5.19.0",
+    "typescript": "^3.6.2",
     "vscode": "^1.1.36",
-    "vscode-languageclient": "^5.3.0-next.6"
+    "vscode-languageclient": "^5.3.0-next.9"
   },
   "engines": {
-    "vscode": "^1.32"
+    "vscode": "^1.37.1"
   },
   "dependencies": {
-    "@types/ws": "^6.0.2",
+    "@types/ws": "^6.0.3",
     "fs-extra": "^8.1.0",
     "jscodeshift": "^0.6.4",
     "minimist": "^1.2.0",
-    "vscode-languageserver": "^5.3.0-next.4",
+    "vscode-languageserver": "^5.3.0-next.10",
     "ws": "^7.1.2"
   }
 }
