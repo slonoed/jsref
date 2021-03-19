@@ -1,0 +1,8 @@
+name: expression
+column: 3
+---
+return a + b
+---
+const result = a + b;
+
+return result;
