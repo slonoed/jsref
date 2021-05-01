@@ -19,16 +19,12 @@ export function replace(range: Range.t, newText: string): t {
   return {range, newText}
 }
 
-export function insert(
-  j: JSCodeshift,
-  position: Position.t,
-  entries: Array<ASTNode | string>,
-): t {
-  const newText = entries.map(n => typeof n === 'string' ? n :j(n).toSource()).join('')
+export function insert(j: JSCodeshift, position: Position.t, entries: Array<ASTNode | string>): t {
+  const newText = entries.map(n => (typeof n === 'string' ? n : j(n).toSource())).join('')
 
   return {
     range: {start: position, end: position},
-    newText
+    newText,
   }
 }
 
@@ -36,13 +32,21 @@ export function del(range: Range.t): t {
   return {range, newText: ''}
 }
 
-export function replaceNode(j: JSCodeshift, oldNode: Printable, newNode: ASTNode): t {
+type NodeReplacementItem = ASTNode | string
+type NodeReplacement = NodeReplacementItem | NodeReplacementItem[]
+
+export function replaceNode(j: JSCodeshift, oldNode: Printable, newNode: NodeReplacement): t {
   const {loc} = oldNode
   if (!loc) {
     throw new Error('old node should have location')
   }
+
+  const newNodes = Array.isArray(newNode) ? newNode : [newNode]
+
+  const newCode = newNodes.map(n => (typeof n === 'string' ? n : j(n).toSource())).join('')
+
   return replace(
     Range.create(loc.start.line, loc.start.column, loc.end.line, loc.end.column),
-    j(newNode).toSource()
+    newCode
   )
 }

@@ -162,6 +162,7 @@ export default class FixerService {
       ast,
       j: jscodeshift,
       data: params.arguments[1],
+      logger: this.logger
     }
     const edit = fixer.createEdit(createEditParams)
 

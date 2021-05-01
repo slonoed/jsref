@@ -17,7 +17,6 @@ const fixer: Fixer<Data> = {
       j.ReturnStatement,
       n => n.loc !== null && Range.isInside(params.selection, n.loc)
     )
-
     if (!node || !node.loc || !node.argument) {
       return null
     }
@@ -35,6 +34,11 @@ const fixer: Fixer<Data> = {
       return null
     }
 
+    const loc = node.loc
+    if (!loc) {
+      return null
+    }
+
     const arg = node.argument
     if (!arg) {
       return null
@@ -45,19 +49,19 @@ const fixer: Fixer<Data> = {
     const id = j.identifier(varName)
 
     const declarator = j.variableDeclarator(id, arg)
-    const declaraion = j.variableDeclaration('const', [declarator])
+    const declaration = j.variableDeclaration('const', [declarator])
 
     const newNode = j.returnStatement(id)
 
-    const loc = node.loc
-    if (!loc) {
-      return null
+    // Check if return has spaces on left side
+    let leftPad = loc.start.column || 0
+    let spaceBetweenNewNodes = '\n\n' // one empty line
+    while (leftPad > 0) {
+      spaceBetweenNewNodes += ' '
+      leftPad--
     }
 
-    return [
-      Patch.replaceNode(j, node, newNode),
-      Patch.insert(j, Position.create(loc.start.line, loc.start.column), [declaraion, '\n\n']),
-    ]
+    return [Patch.replaceNode(j, node, [declaration, spaceBetweenNewNodes, newNode])]
   },
 }
 

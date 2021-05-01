@@ -40,6 +40,7 @@ export function createMultipleEditBuildFunction<T>(fixer: Fixer<T>) {
       j: api,
       ast: api(source),
       data: action.data,
+      logger: console
     })
 
     if (!edit) {

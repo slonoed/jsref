@@ -34,6 +34,7 @@ export type CreateEditParams<T> = {
   ast: AstRoot
   j: jscodeshift.JSCodeshift
   data: T
+  logger: Logger
 }
 
 export type CreateEditResult = Patch.t | Patch.t[]
