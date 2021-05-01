@@ -1,0 +1,45 @@
+{
+  "name": "coc-jsref",
+  "version": "1.1.11",
+  "description": "coc.nvim plugin for JavaScript refactoring",
+  "author": "Dmitry Manannikov <email@slonoed.net>",
+  "license": "MIT",
+  "repository": "https://github.com/slonoed/jsref",
+  "main": "./extension.js",
+  "keywords": [
+    "coc.nvim"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "coc": "^0.0.80"
+  },
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact"
+  ],
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "coc-jsref configuration",
+      "properties": {
+        "coc-jsref.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable coc-jsref extension"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "fs-extra": "^9.1.0",
+    "jscodeshift": "^0.12.0",
+    "minimist": "^1.2.0",
+    "vscode-languageserver": "^5.3.0-next.10",
+    "vscode-languageserver-protocol": "3.15.0-next.8",
+    "ws": "^7.4.5"
+  }
+}

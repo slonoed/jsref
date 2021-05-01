@@ -21,6 +21,7 @@ clean:
 compile: clean
 	tsc
 
+### NPM ##################################################################################
 
 .PHONE: npm-pack
 npm-pack: compile README.md
@@ -33,6 +34,30 @@ npm-pack: compile README.md
 .PHONY: npm-publish
 npm-publish: npm-pack
 	cd build/npm && npm publish
+
+### coc-nvim ##################################################################################
+
+build/coc:
+	mkdir -p build/coc
+
+build/coc/extension.js: build/coc
+	tsc coc/extension.ts --allowSyntheticDefaultImports --outDir build/coc
+
+build/coc/README.md: README.md build/coc
+	cp README.md build/coc/README.md
+
+build/coc/package.json: build/coc coc/package.json
+	cp coc/package.json build/coc/package.json
+
+.PHONE: coc-pack
+coc-pack: compile build/coc/README.md build/coc build/coc/package.json build/coc/extension.js
+	cp -r build/js build/coc/src
+
+.PHONY: coc-publish
+coc-publish: coc-pack
+	cd build/coc && npm publish --access public
+
+
 
 ### Homebrew ##################################################################################
 

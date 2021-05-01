@@ -21,18 +21,19 @@
     "test": "sh ./scripts/e2e.sh"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.6.0",
-    "@types/fs-extra": "^8.0.0",
+    "@babel/preset-typescript": "^7.13.0",
+    "@types/fs-extra": "^8.1.1",
     "@types/jest": "^26.0.23",
-    "@types/jscodeshift": "^0.6.2",
-    "@types/minimist": "^1.2.0",
-    "@types/node": "^12.7.4",
+    "@types/jscodeshift": "^0.6.3",
+    "@types/minimist": "^1.2.1",
+    "@types/node": "^12.20.11",
+    "coc.nvim": "0.0.80",
     "jest": "^26.6.3",
     "jest-raw-loader": "^1.0.1",
-    "prettier": "^1.18.2",
+    "prettier": "^1.19.1",
     "ts-jest": "^26.5.5",
-    "ts-node": "^8.3.0",
-    "tslint": "^5.19.0",
+    "ts-node": "^8.10.2",
+    "tslint": "^5.20.1",
     "typescript": "^3.9.7",
     "vscode": "^1.1.36",
     "vscode-languageclient": "^5.3.0-next.9"
@@ -41,11 +42,11 @@
     "vscode": "^1.37.1"
   },
   "dependencies": {
-    "@types/ws": "^6.0.3",
+    "@types/ws": "^6.0.4",
     "fs-extra": "^8.1.0",
     "jscodeshift": "^0.6.4",
     "minimist": "^1.2.0",
     "vscode-languageserver": "^5.3.0-next.10",
-    "ws": "^7.1.2"
+    "ws": "^7.4.5"
   }
 }

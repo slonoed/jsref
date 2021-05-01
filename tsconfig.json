@@ -6,10 +6,17 @@
     "sourceMap": false,
     "outDir": "build/js",
     "rootDir": "src",
-    "lib": ["es6"],
+    "lib": [
+      "es6"
+    ],
     "downlevelIteration": true,
-    "strict": true
+    "strict": true,
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["./src"],
-  "exclude": ["node_modules"]
+  "include": [
+    "./src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

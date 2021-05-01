@@ -120,6 +120,14 @@ _help needed_
 
 Install deps `npm i`
 
+### coc.nvim extension
+
+Build package `make coc-pack`
+
+Add `set runtimepath^=~/THISREPO/build/coc/` to vimrc or run as command.
+
+[Debug guide][coc-ls-debug]
+
 ### Debug VScode extension
 
 Install LSP Inspector.
@@ -138,8 +146,13 @@ Run `jsbin` with `--lspi` flag and running inspector.
 ### Release npm package
 
 ```
-make npm-pack
 make npm-publish
+```
+
+### Release coc packaged
+
+```
+make coc-publish
 ```
 
 ### Release brew tap (after npm release)
@@ -180,3 +193,4 @@ You can easily contribute by creating new kinds of refactoring. A good example c
 [issue-sublime]: https://github.com/slonoed/jsref/issues/7
 [fixer-example]: https://github.com/slonoed/jsref/blob/master/src/fixers/implicit-return-to-explicit.ts
 [vscode-jsref-marketplace]: https://marketplace.visualstudio.com/items?itemName=slonoed.jsref
+[coc-ls-debug]: https://github.com/neoclide/coc.nvim/wiki/Debug-language-server
