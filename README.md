@@ -22,6 +22,7 @@ Supported refactorings:
 - Expand empty JSX tag
 - Replace string literal with concatenation of strings
 - Convert `require` to `import`
+- Extract `return` argument to a separate variable
 
 Experimental refactorings (can be removed in future):
 
