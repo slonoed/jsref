@@ -53,6 +53,56 @@ Search in **Extensions** panel for `jsref` or install via CLI
 
 `code --install-extension slonoed.jsref`
 
+### Sublime Text 3
+
+Install **jsref** language binary via brew
+
+```
+brew install slonoed/tap/jsref
+```
+
+or npm
+
+```
+npm i -g @slonoed/jsref
+```
+
+Install **LSP** package from Package Control.
+
+Add new client to LSP via `Preferences: LSP Setting`.
+
+```
+"jsref": {
+  "command": ["jsref", "--stdio"],
+	"scopes": ["source.js"],
+	"syntaxes": [
+		"Packages/babel-sublime/JavaScript (Babel).tmLanguage",
+		"Packages/Babel/JavaScript (Babel).sublime-syntax",
+		"Packages/JavaScript/JavaScript.sublime-syntax"
+	],
+	"languageId": "javascript",
+},
+```
+
+Final config should look like this
+
+```
+{
+  "clients": {
+    "jsref": {
+      "command": ["jsref", "--stdio"],
+      "scopes": ["source.js"],
+      "syntaxes": [
+        "Packages/babel-sublime/JavaScript (Babel).tmLanguage",
+        "Packages/Babel/JavaScript (Babel).sublime-syntax",
+        "Packages/JavaScript/JavaScript.sublime-syntax"
+      ],
+      "languageId": "javascript"
+    }
+  }
+}
+```
+
 ### Other editors
 
 All other editors are supported via standard plugins for language servers.
@@ -69,7 +119,7 @@ or npm
 npm i -g @slonoed/jsref
 ```
 
-_I'm not providing examples for configuring editors here. If you need help or ready to contribute, please, create an [issue][new-issue]_
+_Help needed to add instructions for other editors._
 
 
 ## Plans
