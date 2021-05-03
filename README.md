@@ -37,7 +37,7 @@ Experimental refactorings (can be removed in future):
 
 1. Install [coc.nvim plugin][coc-nvim-repo]
 2. Run `:CocInstall coc-jsref`
-3. Configure hotkeys. For example to us `ga`:
+3. Configure hotkeys. For example to use `ga`:
 
 ```
 nmap ga <Plug>(coc-codeaction-cursor)
