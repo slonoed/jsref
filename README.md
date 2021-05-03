@@ -4,7 +4,8 @@ JavaScript refactoring language server
 
 ![Demo Animation](../assets/preview.gif?raw=true)
 
-An idea behind this project is to have desirable refactoring experience for JavaScript without tying to any editor.
+An idea behind this project is to have desirable refactoring experience for JavaScript (JSX, TypeScript, Flowtype)
+without tying to any editor.
 
 This tool implements [language server protocol][ls] (LSP) to avoid any direct binding to code editors.
 This means any [editor with LSP support][ls-page] can use it.
@@ -32,25 +33,16 @@ Experimental refactorings (can be removed in future):
 
 ## Installation
 
-Install globally via brew
+### Vim (via coc.nvim)
+
+1. Install [coc.nvim plugin][coc-nvim-repo]
+2. Run `:CocInstall coc-jsref`
+3. Configure hotkeys. For example to us `ga`:
 
 ```
-brew install slonoed/tap/jsref
+nmap ga <Plug>(coc-codeaction-cursor)
+xmap ga <Plug>(coc-codeaction-selected)
 ```
-
-### Vim
-
-Install [vim-lsc plugin][vim-lsc] and setup
-
-```
-Plug 'natebosch/vim-lsc'
-let g:lsc_server_commands = {
-\'javascript': 'jsref --stdio',
-\'javascript.jsx': 'jsref --stdio',
-\}
-```
-
-By default [vim-lsc][vim-lsc] adds `ga` shortcut for requesting code actions.
 
 ### [VSCode][vscode-jsref-marketplace]
 
@@ -58,62 +50,30 @@ _VSCode extension contains server and you don't need to install global one with 
 
 Search in **Extensions** panel for `jsref` or install via CLI
 
-`code-insiders --install-extension slonoed.jsref`
+`code --install-extension slonoed.jsref`
 
-### Atom
+### Other editors
 
-[TBD][issue-atom]
+All other editors are supported via standard plugins for language servers.
 
-_help needed_
-
-### Sublime Text 3
-
-Install **LSP** package from Package Control.
-
-Add new client to LSP via `Preferences: LSP Setting`.
+jsref language server can be installed via brew
 
 ```
-"jsref": {
-  "command": ["jsref", "--stdio"],
-	"scopes": ["source.js"],
-	"syntaxes": [
-		"Packages/babel-sublime/JavaScript (Babel).tmLanguage",
-		"Packages/Babel/JavaScript (Babel).sublime-syntax",
-		"Packages/JavaScript/JavaScript.sublime-syntax"
-	],
-	"languageId": "javascript",
-},
+brew install slonoed/tap/jsref
 ```
 
-Final config should look like this
+or npm
 
 ```
-{
-  "clients": {
-    "jref": {
-      "command": ["jsref", "--stdio"],
-      "scopes": ["source.js"],
-      "syntaxes": [
-        "Packages/babel-sublime/JavaScript (Babel).tmLanguage",
-        "Packages/Babel/JavaScript (Babel).sublime-syntax",
-        "Packages/JavaScript/JavaScript.sublime-syntax"
-      ],
-      "languageId": "javascript"
-    }
-  }
-}
+npm i -g @slonoed/jsref
 ```
 
-Enable language server via `LSP: Enable Language Server Globally` or `LSP: Enable Language Server in Project`
+_I'm not providing examples for configuring editors here. If you need help or ready to contribute, please, create an [issue][new-issue]_
 
-### Emacs
-
-[TBD][issue-emacs]
-
-_help needed_
 
 ## Plans
 
+- Ability to create custom refactorings (per user and per workspace)
 - More refactorings! If you need some specific, create an [issue][new-issue]
 
 ## Development
@@ -194,3 +154,4 @@ You can easily contribute by creating new kinds of refactoring. A good example c
 [fixer-example]: https://github.com/slonoed/jsref/blob/master/src/fixers/implicit-return-to-explicit.ts
 [vscode-jsref-marketplace]: https://marketplace.visualstudio.com/items?itemName=slonoed.jsref
 [coc-ls-debug]: https://github.com/neoclide/coc.nvim/wiki/Debug-language-server
+[coc-nvim-repo]: https://github.com/neoclide/coc.nvim
