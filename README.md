@@ -34,7 +34,7 @@ Experimental refactorings (can be removed in future):
 
 ## Installation
 
-### Vim (via coc.nvim)
+### Vim and Neovim (via coc.nvim)
 
 1. Install [coc.nvim plugin][coc-nvim-repo]
 2. Run `:CocInstall coc-jsref`
