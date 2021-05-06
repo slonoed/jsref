@@ -163,10 +163,10 @@ return result;</code></pre>
 <tr>
   <td>replace with concatenation</td>
   <td>
-    <pre><code>`hello world`</code></pre>
+    <pre><code>`hello ${a}`</code></pre>
   </td>
   <td>
-    <pre><code>&quot;hello world&quot;</code></pre>
+    <pre><code>&quot;hello &quot; + a</code></pre>
   </td>
 </tr>
 <tr>
