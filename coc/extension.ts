@@ -4,7 +4,7 @@ import { ExtensionContext, services, workspace, TransportKind, LanguageClient } 
 const languages = ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'];
 
 export async function activate(context: ExtensionContext): Promise<void> {
-  const config = workspace.getConfiguration('coc-jsref')
+  const config = workspace.getConfiguration('jsref')
   const isEnable = config.get<boolean>('enable', true)
   if (!isEnable) {
     return
@@ -19,8 +19,8 @@ export async function activate(context: ExtensionContext): Promise<void> {
     documentSelector: languages.map((language) => ({ scheme: 'file', language })),
   };
   const client = new LanguageClient(
-    'coc-jsref', // the id
-    'coc-jsref', // the name of the language server
+    'jsref', // the id
+    'jsref', // the name of the language server
     serverOptions,
     clientOptions
   );

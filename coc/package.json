@@ -26,7 +26,7 @@
       "type": "object",
       "title": "coc-jsref configuration",
       "properties": {
-        "coc-jsref.enabled": {
+        "jsref.enable": {
           "type": "boolean",
           "default": true,
           "description": "Enable coc-jsref extension"
