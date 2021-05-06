@@ -14,23 +14,171 @@ It uses babylon parser to parse and generate JavaScript.
 
 Supported refactorings:
 
-- Convert explicit return to implicit
-- Flip if-else
-- Flip ternary expression
-- Convert regular function to arrow function
-- Convert implicit return to explicit
-- Expand empty JSX tag
-- Replace string literal with concatenation of strings
-- Convert `require` to `import`
-- Extract `return` argument to a separate variable
+<table>
+  <tr>
+    <th>Refactoring</th>
+    <th>Code before</th>
+    <th>Code after</th>
+  <tr>
+  <tr>
+  <td>const arrow to function declaration</td>
+  <td>
+    <pre><code>const a = () =&gt; { return 1; }</code></pre>
+  </td>
+  <td>
+    <pre><code>function a() { return 1; }</code></pre>
+  </td>
+</tr>
+<tr>
+  <td>experimental jest only test</td>
+  <td>
+    <pre><code>it(&#039;hello&#039;, () =&gt; {})</code></pre>
+  </td>
+  <td>
+    <pre><code>it.only(&#039;hello&#039;, () =&gt; {})</code></pre>
+  </td>
+</tr>
+<tr>
+  <td>experimental jest revert only</td>
+  <td>
+    <pre><code>it.only(&#039;hello&#039;, () =&gt; {})</code></pre>
+  </td>
+  <td>
+    <pre><code>it(&#039;hello&#039;, () =&gt; {})</code></pre>
+  </td>
+</tr>
+<tr>
+  <td>experimental jest revert skip test</td>
+  <td>
+    <pre><code>it.skip(&quot;s&quot;, () =&gt; { hello(); })</code></pre>
+  </td>
+  <td>
+    <pre><code>it(&quot;s&quot;, () =&gt; { hello(); })</code></pre>
+  </td>
+</tr>
+<tr>
+  <td>experimental jest skip test</td>
+  <td>
+    <pre><code>it(&quot;s&quot;, () =&gt; { hello(); })</code></pre>
+  </td>
+  <td>
+    <pre><code>it.skip(&quot;s&quot;, () =&gt; { hello(); })</code></pre>
+  </td>
+</tr>
+<tr>
+  <td>experimental use styled component</td>
+  <td>
+    <pre><code>import r from &#039;r-dom&#039;
 
-Experimental refactorings (can be removed in future):
+const A = () =&gt; {
+  return r.div()
+}</code></pre>
+  </td>
+  <td>
+    <pre><code>import r from &#039;r-dom&#039;
+import { styled } from &quot;styletron-react&quot;;
 
-- Disable Jest test (add '.skip')
-- Enable Jest test (remove '.skip')
-- Add '.only' to Jest test
-- Remove '.only' from Jest test
-- Use styled component form "styletron-react"
+const StyledDiv = styled(&quot;div&quot;, {});
+
+const A = () =&gt; {
+  return r(StyledDiv)
+}</code></pre>
+  </td>
+</tr>
+<tr>
+  <td>explicit return to implicit</td>
+  <td>
+    <pre><code>() =&gt; { return test() }</code></pre>
+  </td>
+  <td>
+    <pre><code>() =&gt; test()</code></pre>
+  </td>
+</tr>
+<tr>
+  <td>extract return</td>
+  <td>
+    <pre><code>return a + b</code></pre>
+  </td>
+  <td>
+    <pre><code>const result = a + b;
+
+return result;</code></pre>
+  </td>
+</tr>
+<tr>
+  <td>flip if else</td>
+  <td>
+    <pre><code>if (a) {
+  b()
+} else {
+  c()
+}</code></pre>
+  </td>
+  <td>
+    <pre><code>if (!a) {
+  c()
+} else {
+  b()
+}</code></pre>
+  </td>
+</tr>
+<tr>
+  <td>flip ternary</td>
+  <td>
+    <pre><code>a ? b : c</code></pre>
+  </td>
+  <td>
+    <pre><code>!a ? c : b</code></pre>
+  </td>
+</tr>
+<tr>
+  <td>function to arrow</td>
+  <td>
+    <pre><code>const a = function () { return 1; }</code></pre>
+  </td>
+  <td>
+    <pre><code>const a = () =&gt; { return 1; }</code></pre>
+  </td>
+</tr>
+<tr>
+  <td>implicit return to explicit</td>
+  <td>
+    <pre><code>const foo = () =&gt; hello()</code></pre>
+  </td>
+  <td>
+    <pre><code>const foo = () =&gt; {
+    return hello();
+}</code></pre>
+  </td>
+</tr>
+<tr>
+  <td>jsx expand empty tag</td>
+  <td>
+    <pre><code>&lt;input/&gt;</code></pre>
+  </td>
+  <td>
+    <pre><code>&lt;input&gt;&lt;/input&gt;</code></pre>
+  </td>
+</tr>
+<tr>
+  <td>replace with concatenation</td>
+  <td>
+    <pre><code>`hello world`</code></pre>
+  </td>
+  <td>
+    <pre><code>&quot;hello world&quot;</code></pre>
+  </td>
+</tr>
+<tr>
+  <td>require to import</td>
+  <td>
+    <pre><code>const a = require(&#039;b&#039;)</code></pre>
+  </td>
+  <td>
+    <pre><code>import a from &quot;b&quot;;</code></pre>
+  </td>
+</tr>
+</table>
 
 ## Installation
 
