@@ -18,7 +18,7 @@ const fixer: Fixer<Data> = {
         n.loc !== null &&
         Range.isInside(params.selection, n.loc) &&
         j.Identifier.check(n.callee) &&
-        n.callee.name === 'it'
+        (n.callee.name === 'it' || n.callee.name === 'test')
     )
 
     if (!node || !node.loc) {

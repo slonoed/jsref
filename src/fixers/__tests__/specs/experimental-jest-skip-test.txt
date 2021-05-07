@@ -4,3 +4,10 @@ column: 1
 it("s", () => { hello(); })
 ---
 it.skip("s", () => { hello(); })
+=============================
+name: using "test" function
+column: 1
+---
+test("s", () => { hello(); })
+---
+test.skip("s", () => { hello(); })

@@ -1,5 +1,4 @@
 import {Fixer} from '../types'
-import * as jscodeshift from 'jscodeshift'
 import * as Range from '../range'
 import * as Position from '../pos'
 import * as Ast from '../ast'
@@ -18,7 +17,7 @@ const fixer: Fixer<Data> = {
         n.loc !== null &&
         Range.isInside(params.selection, n.loc) &&
         j.Identifier.check(n.callee) &&
-        n.callee.name === 'it'
+        (n.callee.name === 'it' || n.callee.name === 'test')
     )
 
     if (!node || !node.loc) {

@@ -4,3 +4,10 @@ column: 1
 it('hello', () => {})
 ---
 it.only('hello', () => {})
+==============================
+name: using "test" function
+column: 1
+---
+test('hello', () => {})
+---
+test.only('hello', () => {})
