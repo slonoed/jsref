@@ -195,8 +195,6 @@ xmap ga <Plug>(coc-codeaction-selected)
 
 ### [VSCode][vscode-jsref-marketplace]
 
-_VSCode extension contains server and you don't need to install global one with `brew`._
-
 Search in **Extensions** panel for `jsref` or install via CLI
 
 `code --install-extension slonoed.jsref`
