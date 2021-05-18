@@ -7,7 +7,7 @@ run-vscode:
 	code --extensionDevelopmentPath ${CURRENT_DIR}/dev/vscode-client/ --log trace dev/playground
 
 test:
-	jest
+	node node_modules/.bin/jest
 
 .PHONY: watch
 watch:
