@@ -3,7 +3,7 @@ column: 18
 ---
 const a = () => { return 1; }
 ---
-function a() { return 1; }
+function a() { return 1; } NOPE
 ================================
 name: async
 column: 18
