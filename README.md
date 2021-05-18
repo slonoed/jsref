@@ -1,5 +1,7 @@
 # jsref
 
+TEST
+
 JavaScript refactoring language server
 
 ![Demo Animation](../assets/preview.gif?raw=true)
