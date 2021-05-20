@@ -20,3 +20,13 @@ const a = async () => 1
 async function a() {
     return 1;
 }
+================================
+name: multiple function in file
+column: 18
+line: 2
+---
+const no = () => { return 1; }
+const a = () => { return 1; }
+---
+const no = () => { return 1; }
+function a() { return 1; }

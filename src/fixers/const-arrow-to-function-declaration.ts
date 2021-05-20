@@ -15,6 +15,10 @@ const fixer: Fixer<Data> = {
         return false
       }
 
+      if (!Range.isInside(params.selection, n.loc)) {
+        return false
+      }
+
       const declarator = n.declarations[0]
       if (!j.VariableDeclarator.check(declarator)) {
         return false
