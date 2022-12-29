@@ -3,7 +3,6 @@ import {Collection} from 'jscodeshift/src/Collection'
 import * as Range from './range'
 import * as Patch from './patch'
 import {Logger} from './logger'
-import {pathExists} from 'fs-extra'
 
 export interface File extends jscodeshift.Node {
   type: string

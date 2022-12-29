@@ -7,7 +7,6 @@ import * as Patch from '../patch'
 import astTypes from 'recast/lib/types'
 import {Collection} from 'jscodeshift/src/Collection'
 import {capitalize} from '../text-utils'
-import {pathExists} from 'fs-extra'
 import {jsxElement} from '@babel/types'
 
 type NodeType = 'jsx' | 'rdom'

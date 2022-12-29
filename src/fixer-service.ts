@@ -6,7 +6,7 @@ import {
   ApplyWorkspaceEditParams,
   TextDocuments,
 } from 'vscode-languageserver'
-import * as fs from 'fs-extra'
+import {promises as fs} from 'fs'
 import * as path from 'path'
 import AstService from './ast-service'
 import * as Range from './range'
@@ -22,7 +22,7 @@ export async function filterJsFileName(fileName: string): Promise<string | null>
   if (!fileName.match(/\.(j|t)s$/)) {
     return null
   }
-  const stat = await fs.lstat(path.join(fixersPath, fileName))
+  const stat = await fs.stat(path.join(fixersPath, fileName))
   return stat.isFile() ? fileName : null
 }
 
@@ -162,7 +162,7 @@ export default class FixerService {
       ast,
       j: jscodeshift,
       data: params.arguments[1],
-      logger: this.logger
+      logger: this.logger,
     }
     const edit = fixer.createEdit(createEditParams)
 
