@@ -1,16 +1,42 @@
-//import { File } from 'ast-types';
-import {TextDocuments} from 'vscode-languageserver'
-import * as jscodeshift from 'jscodeshift'
-import {Collection} from 'jscodeshift/src/Collection'
-import {Logger} from './logger'
-// TODO add the rest
-// https://github.com/facebook/jscodeshift#parser
-// type LanguageId = 'javascript'
+import { TextDocuments } from 'vscode-languageserver/node'
+import { JSCodeshift, withParser } from 'jscodeshift'
+import { Collection } from 'jscodeshift/src/Collection'
+import { TextDocument } from 'vscode-languageserver-textdocument'
 
+import { Logger } from './types'
+
+const csTs = withParser('ts')
+const csBabylon = withParser('babylon')
+
+const codeShifts: { [langId: string]: JSCodeshift } = {
+  typescript: csTs,
+  javascript: csBabylon,
+}
+
+/**
+ * Parse code to AST and work as cache.
+ * Uses TextDocuments to invalidate cache
+ */
 export default class AstService {
-  constructor(private documents: TextDocuments, private logger: Logger) {}
+  logger: Logger
+  asts: Map<string, any>
+  documents: TextDocuments<TextDocument>
+
+  constructor(logger: Logger, documents: TextDocuments<TextDocument>) {
+    this.logger = logger
+    this.documents = documents
+    this.asts = new Map()
+
+    documents.onDidChangeContent((event) => {
+      this.asts.delete(event.document.uri)
+    })
+  }
 
   getAstTree(uri: string): Collection<any> | null {
+    if (this.asts.has(uri)) {
+      return this.asts.get(uri)
+    }
+
     const j = this.getCodeShift(uri)
     if (!j) {
       return null
@@ -21,41 +47,30 @@ export default class AstService {
     }
     const source = document.getText()
     try {
-      return j(source)
+      const ast = j(source)
+      this.asts.set(uri, ast)
+      return ast
     } catch (e) {
       // Source is broken. Always when user typing
+      this.logger.warn(`source is broken for ${uri}`)
       return null
     }
   }
 
-  getCodeShift(uri: string): jscodeshift.JSCodeshift | null {
+  getCodeShift(uri: string): JSCodeshift | null {
     const document = this.documents.get(uri)
 
     if (!document) {
-      this.logger.error(`No document found for uri: ${uri}`)
+      this.logger.error(`No document found for uri: "${uri}"`)
       return null
     }
     const langId = document.languageId
 
-    if (langId === 'javascript' && isFlowCode(document.getText())) {
-      return jscodeshift.withParser('flow')
+    if (!codeShifts[langId]) {
+      this.logger.error(`${langId} is not supported`)
+      return null
     }
 
-    if (langId === 'typescript') {
-      return jscodeshift.withParser('ts')
-    }
-
-    if (langId === 'javascript') {
-      return jscodeshift.withParser('babylon')
-    }
-
-    const errorMsg = `${langId} is not supported`
-    this.logger.error(errorMsg)
-
-    return null
+    return codeShifts[langId]
   }
-}
-
-function isFlowCode(text: string): boolean {
-  return /\/\/[\t\ ]*@flow/.test(text)
 }

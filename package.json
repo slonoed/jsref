@@ -1,7 +1,7 @@
 {
   "name": "@slonoed/jsref",
   "description": "JavaScript refactoring language server",
-  "version": "1.1.15",
+  "version": "2.0.0",
   "author": "Dmitry Manannikov <email@slonoed.net> (https://slonoed.net/)",
   "license": "MIT",
   "repository": "https://github.com/slonoed/jsref",
@@ -9,43 +9,21 @@
   "publishConfig": {
     "access": "public"
   },
-  "scripts": {
-    "vscode:prepublish": "cd client && npm run update-vscode && cd .. && npm run compile",
-    "compile:client": "tsc -p ./client/tsconfig.json",
-    "compile:server": "tsc -p ./server/tsconfig.json",
-    "watch:client": "tsc -w -p ./client/tsconfig.json",
-    "watch:server": "tsc -w -p ./server/tsconfig.json",
-    "watch:all": "npm run watch:server & npm run watch:client",
-    "compile": "tsc -w -p ./tsconfig.json",
-    "postinstall": "vscode-install",
-    "test": "sh ./scripts/e2e.sh"
-  },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.13.0",
-    "@types/jest": "^26.0.23",
-    "@types/jscodeshift": "^0.6.3",
-    "@types/minimist": "^1.2.1",
-    "@types/node": "^10.12.0",
-    "coc.nvim": "0.0.80",
-    "hosted-git-info": ">=3.0.8",
-    "jest": "^26.6.3",
-    "jest-raw-loader": "^1.0.1",
-    "prettier": "^1.19.1",
-    "ts-jest": "^26.5.5",
-    "ts-node": "^8.10.2",
-    "tslint": "^5.20.1",
-    "typescript": "^4",
-    "vscode": "^1.1.36",
-    "vscode-languageclient": "^5.3.0-next.9"
-  },
-  "engines": {
-    "vscode": "^1.37.1"
+    "@tsconfig/node16": "^1.0.3",
+    "@types/jest": "^29.5.0",
+    "@types/jscodeshift": "^0.11.6",
+    "@types/node": "^18.15.11",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0"
   },
   "dependencies": {
-    "@types/ws": "^6.0.4",
-    "jscodeshift": "^0.6.4",
-    "minimist": "^1.2.0",
-    "vscode-languageserver": "^5.3.0-next.10",
-    "ws": "^7.4.5"
-  }
+    "jscodeshift": "^0.14.0",
+    "vscode-languageserver": "^8.1.0",
+    "vscode-languageserver-textdocument": "^1.0.8"
+  },
+  "scripts": {
+    "dev": "tsc -w"
+  },
+  "types": "build/js/index.d.ts"
 }

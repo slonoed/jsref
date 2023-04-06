@@ -1,92 +1,156 @@
-/* --------------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- * ------------------------------------------------------------------------------------------ */
-'use strict'
-
 import {
-  Connection,
-  CodeActionParams,
-  ExecuteCommandParams,
-  Command,
-  TextDocuments,
   createConnection,
   ProposedFeatures,
-} from 'vscode-languageserver'
-import FixerService from './fixer-service'
-import {Logger, createConnectionLogger, createFileLogger, createNoopLogger} from './logger'
-import * as Inspector from './inspector'
-import * as minimist from 'minimist'
+  InitializeParams,
+  InitializeResult,
+  TextDocuments,
+  TextDocumentSyncKind,
+  CodeActionParams,
+  CodeAction,
+  Connection,
+  ExecuteCommandParams,
+  ApplyWorkspaceEditParams,
+} from 'vscode-languageserver/node'
+import fs from 'fs/promises'
 
-const argv: minimist.ParsedArgs = minimist(process.argv.slice(2))
+import { TextDocument } from 'vscode-languageserver-textdocument'
+import CombinedLogger from './combined-logger'
+import ActionManager from './action-manager'
+import { Loader, Logger } from './types'
+import FixerStore from './fixer-store'
+import InternalLoader from './loaders/internal-loader'
+import FolderLoader from './loaders/folder-loader'
+import { expandTilde } from './utils'
+import AstService from './ast-service'
+import PackagesLoader from './loaders/packages-loader'
 
-function createLspConnection(): Connection {
-  if (argv.stdio && argv.lspi) {
-    const {input, output} = Inspector.connect(process.stdin, process.stdout)
-    return createConnection(input, output)
-  } else {
-    return createConnection(ProposedFeatures.all)
-  }
+type Options = {
+  folders: string[]
 }
 
-function createLogger(connection: Connection): Logger {
-  if (argv.log) {
-    return createFileLogger(argv.log)
-  } else if (argv.debug) {
-    return createConnectionLogger(connection)
+export default class Server {
+  connection: Connection
+  logger: Logger
+  actionManager: ActionManager
+
+  static async start() {
+    let server: Server
+    const connection = createConnection(ProposedFeatures.all)
+    connection.onInitialize(async (params) => {
+      server = await Server.create(connection, params)
+      return server.getInitializationData(params)
+    })
+    connection.onExit(() => {
+      if (server) {
+        server.dispose()
+      }
+    })
+    connection.listen()
   }
 
-  return createNoopLogger()
-}
+  private static async create(connection: Connection, params: InitializeParams) {
+    const options = await createOptions(params)
+    const documents = new TextDocuments(TextDocument)
+    documents.listen(connection)
+    const logger = new CombinedLogger(console, connection.console)
 
-export function create() {
-  const connection = createLspConnection()
-  const logger = createLogger(connection)
+    const loaders: Loader[] = options.folders.map((f) => new FolderLoader(logger, f))
+    loaders.push(new InternalLoader(logger))
+    loaders.push(new PackagesLoader(logger))
 
-  const documents = new TextDocuments()
-  documents.listen(connection)
-  const fixerService = new FixerService(documents, logger)
+    const store = new FixerStore(logger, loaders)
+    // TODO use factory
+    await store.init()
+    const astService = new AstService(logger, documents)
+    const actionManager = new ActionManager(store, logger, astService)
 
-  connection.onInitialize(onInitialize)
-  connection.listen()
+    const server = new Server(logger, connection, actionManager)
+    return server
+  }
 
-  // Handlers
+  private constructor(logger: Logger, connection: Connection, actionManager: ActionManager) {
+    this.logger = logger
+    this.connection = connection
+    this.actionManager = actionManager
+    this.connection.onCodeAction((p) => this.handleCodeAction(p))
+    this.connection.onExecuteCommand((p) => this.handleExecuteCommand(p))
+  }
 
-  async function onInitialize() {
-    await fixerService.start()
+  dispose() {
+    this.connection.dispose()
+  }
 
-    // handle trace
-    connection.onCodeAction(onCodeAction)
-    connection.onExecuteCommand(onExecuteCommand)
+  getInitializationData(params: InitializeParams): InitializeResult {
+    this.logger.info('on get options')
+    this.logger.info(params as any)
 
     return {
       capabilities: {
-        textDocumentSync: documents.syncKind,
+        textDocumentSync: TextDocumentSyncKind.Incremental,
         codeActionProvider: true,
         executeCommandProvider: {
-          commands: fixerService.getAvailableCommands(),
+          commands: ['test'],
         },
       },
     }
   }
 
-  function onCodeAction(params: CodeActionParams): Command[] {
+  handleCodeAction(p: CodeActionParams): CodeAction[] {
+    this.logger.info(p as any)
+    return this.actionManager.suggestCodeActions(p)
+  }
+
+  async handleExecuteCommand(params: ExecuteCommandParams) {
+    let edit: ApplyWorkspaceEditParams | null = null
     try {
-      return fixerService.suggestCodeActions(params)
+      edit = await this.actionManager.createEdit(params)
     } catch (e) {
-      logger.error('onCodeAction error: ' + e.message + ' :: ' + e.stack)
-      return []
+      this.connection?.window.showErrorMessage(`Error preparing edit: ${e}`)
+      return
+    }
+
+    if (!edit) {
+      this.connection?.window.showInformationMessage('No changes to apply')
+      return
+    }
+
+    this.logger.info('applying edit: ' + JSON.stringify(edit))
+    const result = await this.connection?.workspace.applyEdit(edit)
+    if (result) {
+      if (!result.applied) {
+        this.logger.error(`Client did not apply result because ${result.failureReason}`)
+      }
+    } else {
+      this.logger.error('Empty result when applying edit')
+    }
+  }
+}
+
+/**
+ * Convert client options (from config) to internal valid data.
+ * If client options are incorrect then skip
+ *
+ */
+async function createOptions(params: InitializeParams): Promise<Options> {
+  const input = params.initializationOptions
+
+  const folders: string[] = []
+  if (Array.isArray(input?.folders)) {
+    for (const folder of input.folders) {
+      try {
+        // TODO also handle relative to root path
+        const absPath = expandTilde(folder)
+        const stat = await fs.stat(absPath)
+        if (stat.isDirectory()) {
+          folders.push(absPath)
+        }
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 
-  async function onExecuteCommand(params: ExecuteCommandParams) {
-    try {
-      const edit = fixerService.createEdit(params)
-      if (edit) {
-        await connection.workspace.applyEdit(edit)
-      }
-    } catch (e) {
-      logger.error('Error creating edit. ' + e.message + '\n' + e.stack)
-    }
+  return {
+    folders,
   }
 }

@@ -1,6 +1,0 @@
-name: simple
-column: 6
----
-<input/>
----
-<input></input>

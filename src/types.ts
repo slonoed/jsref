@@ -1,44 +1,49 @@
-import * as jscodeshift from 'jscodeshift'
-import {Collection} from 'jscodeshift/src/Collection'
-import * as Range from './range'
-import * as Patch from './patch'
-import {Logger} from './logger'
+import { JSCodeshift, Node } from 'jscodeshift'
+import { Collection } from 'jscodeshift/src/Collection'
+import { CodeActionParams, TextEdit, WorkspaceEdit } from 'vscode-languageserver'
+import Api from './api'
 
-export interface File extends jscodeshift.Node {
-  type: string
-  program: jscodeshift.Program
-  name: string | null
-}
+// This type represents edit that fixer can return
+// WorkspaceEdit edit gives full control across multiple documents
+// TextEdit represents a simple edit in document where code action was called
+export type Edit = WorkspaceEdit | TextEdit
 
-export type AstRoot = Collection<File>
+type EditFn = () => Edit
+type EditFnAsync = () => Promise<Edit>
 
-type Config = {
-  packages: string[]
-}
+// Most of the time fixer will delay computations (EditFn) until user pick that fixer.
+// If computation is lightweight fixer can return Edit right away.
+// If fixer needs some async operations then it can return EditFnAsync
+export type FixEdit = Edit | EditFn | EditFnAsync
 
-export type SuggestActionParams = {
-  j: jscodeshift.JSCodeshift
-  ast: Collection<File>
-  selection: Range.t
-  logger: Logger
-  config?: Config
-}
-
-export type SuggestActionResult<T> = {
+export type Fix = {
   title: string
-  data: T
+  edit: FixEdit
 }
 
-export type CreateEditParams<T> = {
-  ast: AstRoot
-  j: jscodeshift.JSCodeshift
-  data: T
+export type FixerInput = {
+  params: CodeActionParams
+  j: JSCodeshift
+  ast: Collection<any>
+  target: Collection<any>
   logger: Logger
+  api: Api
 }
 
-export type CreateEditResult = Patch.t | Patch.t[]
+type FixFn = (i: FixerInput) => Fix | null
 
-export interface Fixer<T> {
-  suggestCodeAction(params: SuggestActionParams): SuggestActionResult<T> | null
-  createEdit(params: CreateEditParams<T>): CreateEditResult | null
+export type Fixer = {
+  id: string
+  fix: FixFn
+}
+
+export type Logger = {
+  error(message: string, ...args: any[]): void
+  warn(message: string, ...args: any[]): void
+  info(message: string, ...args: any[]): void
+  log(message: string, ...args: any[]): void
+}
+
+export type Loader = {
+  load(): Promise<Fixer[]>
 }

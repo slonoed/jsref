@@ -1,22 +1,10 @@
 {
+  "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
-    "target": "es3",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": false,
     "outDir": "build/js",
     "rootDir": "src",
-    "lib": [
-      "es6"
-    ],
-    "downlevelIteration": true,
-    "strict": true,
-    "allowSyntheticDefaultImports": true
+    "declaration": true
   },
-  "include": [
-    "./src"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["./src"],
+  "exclude": ["node_modules"]
 }

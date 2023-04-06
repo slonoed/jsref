@@ -1,41 +1,10 @@
-import {Fixer} from '../types'
-import * as jscodeshift from 'jscodeshift'
-import * as Range from '../range'
-import * as Position from '../pos'
-import * as Ast from '../ast'
-import * as Patch from '../patch'
+import { Fixer } from '../types'
 
-type Data = Position.t
+const fix: Fixer = {
+  id: 'implicit-return-to-explicit',
+  fix: ({ j, api }) => {
+    const node = api.closestNode(j.ArrowFunctionExpression)
 
-const fixer: Fixer<Data> = {
-  suggestCodeAction(params) {
-    const {j, ast} = params
-
-    const collection = ast.find(
-      j.ArrowFunctionExpression,
-      (n: jscodeshift.ArrowFunctionExpression) => {
-        return n.loc && Range.isInside(params.selection, n.loc) && j.Expression.check(n.body)
-      }
-    )
-
-    if (collection.size() !== 1) {
-      return null
-    }
-
-    const node = collection.nodes()[0]
-    if (!node.loc) {
-      return null
-    }
-
-    return {
-      title: `Use explicit return`,
-      data: node.loc.start,
-    }
-  },
-  createEdit(params) {
-    const {data, ast, j} = params
-
-    const node = Ast.findFirstNode(ast, j.ArrowFunctionExpression, n => Ast.isOnPosition(n, data))
     if (!node) {
       return null
     }
@@ -45,15 +14,22 @@ const fixer: Fixer<Data> = {
       return null
     }
 
-    const newNode = j.arrowFunctionExpression(
-      node.params,
-      j.blockStatement([j.returnStatement(body)]),
-      false
-    )
-    newNode.async = node.async
+    const edit = () => {
+      const newNode = j.arrowFunctionExpression(
+        node.params,
+        j.blockStatement([j.returnStatement(body)]),
+        false
+      )
+      newNode.async = node.async
 
-    return Patch.replaceNode(j, node, newNode)
+      return api.replaceNode(node, newNode)
+    }
+
+    return {
+      title: 'Use explicit return',
+      edit,
+    }
   },
 }
 
-export default fixer
+export default fix
