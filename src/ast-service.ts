@@ -10,7 +10,9 @@ const csBabylon = withParser('babylon')
 
 const codeShifts: { [langId: string]: JSCodeshift } = {
   typescript: csTs,
+  typescriptreact: csTs,
   javascript: csBabylon,
+  javascriptreact: csBabylon,
 }
 
 /**
@@ -66,6 +68,7 @@ export default class AstService {
     }
     const langId = document.languageId
 
+    console.log(langId)
     if (!codeShifts[langId]) {
       this.logger.error(`${langId} is not supported`)
       return null

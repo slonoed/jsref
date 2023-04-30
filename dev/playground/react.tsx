@@ -1,0 +1,4 @@
+
+const Foo = () => {
+  return <CMp/>
+}
