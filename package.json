@@ -18,6 +18,9 @@
     "ts-jest": "^29.1.0"
   },
   "dependencies": {
+    "@babel/parser": "^7.21.5",
+    "@babel/plugin-syntax-jsx": "^7.21.4",
+    "@babel/plugin-syntax-typescript": "^7.21.4",
     "jscodeshift": "^0.14.0",
     "vscode-languageserver": "^8.1.0",
     "vscode-languageserver-textdocument": "^1.0.8"

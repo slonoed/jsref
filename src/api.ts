@@ -42,7 +42,7 @@ export default class Api {
   }
 
   closestNode<T>(type: Type<T>, filter?: Filter<T>): T | null {
-    const targetMatched = this.target.isOfType(type)
+    const targetMatched = this.target.isOfType(type as any)
     if (targetMatched) {
       const node = this.target.nodes()[0]
       if (!filter || filter?.(node)) {
@@ -50,7 +50,7 @@ export default class Api {
       }
     }
 
-    return this.target.closest(type, filter).nodes()[0]
+    return this.target.closest(type as any, filter as any).nodes()[0]
   }
 
   replaceNode(oldNode: Printable, newNode: NodeReplacement): TextEdit {
@@ -74,7 +74,7 @@ export default class Api {
   }
 
   // Negate expression (ex: == to !=)
-  negateExpression(expr: any) {
+  negateExpression(expr: any): any {
     const j = this.j
     // 1. !a => a
     if (j.UnaryExpression.check(expr) && expr.operator === '!') {
