@@ -61,6 +61,9 @@ export default class Server {
     const store = new FixerStore(logger, loaders)
     // TODO use factory
     await store.init()
+
+    logger.info('Fixers ready: \n' + [...store.getIds()].sort().join('\n'))
+
     const astService = new AstService(logger, documents)
     const actionManager = new ActionManager(store, logger, astService)
 
