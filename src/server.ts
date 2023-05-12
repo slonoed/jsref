@@ -96,8 +96,12 @@ export default class Server {
   }
 
   handleCodeAction(p: CodeActionParams): CodeAction[] {
-    this.logger.info(p as any)
-    return this.actionManager.suggestCodeActions(p)
+    try {
+      return this.actionManager.suggestCodeActions(p)
+    } catch (e: any) {
+      this.logger.error(e)
+      return []
+    }
   }
 
   async handleExecuteCommand(params: ExecuteCommandParams) {

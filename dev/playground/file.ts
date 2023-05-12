@@ -1,5 +1,1 @@
-function foo() {
-	return 1;
-}
-
-test('sdas', () => {})
+export class Boo {}

@@ -26,6 +26,16 @@ describe('findNodeAtPosition', () => {
     expect(result!.get().value.type).toBe('Identifier')
   })
 
+  test('should work with export value', () => {
+    const code = `export const a = 1`
+    const ast = jscodeshift(code)
+    const j = jscodeshift.withParser('babylon')
+    const position: Position = { line: 0, character: 10 }
+    const result = findNodeAtPosition(ast, position)
+    expect(result.size()).toBe(1)
+    expect(result.isOfType(j.VariableDeclaration)).toBe(true)
+  })
+
   // test('should return null when position is outside any node', () => {
   //   const position: Position = { line: 0, character: 0 } // Outside any node
   //   const result = findNodeAtPosition(ast, position)

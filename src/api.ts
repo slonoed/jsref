@@ -12,10 +12,46 @@ type NodeReplacementItem = ASTNode | string
 type NodeReplacement = NodeReplacementItem | NodeReplacementItem[]
 type Filter<T> = (value: T) => boolean
 
+function getLoc(code: string, start: number, end: number) {
+  let line = 1
+  let lastNewLinePos = -1
+
+  for (let i = 0; i < end; i++) {
+    if (code[i] === '\n') {
+      line++
+      lastNewLinePos = i
+    }
+  }
+
+  return {
+    start: {
+      line: line,
+      column: start - lastNewLinePos,
+    },
+    end: {
+      line: line,
+      column: end - lastNewLinePos,
+    },
+  }
+}
+
 export function findNodeAtPosition(ast: Collection<File>, position: Position): Collection<any> {
+  // Note: Position is 0 line based
+  // Ast loc is 1 line based
+
+  let code: string | null = null
+
   function isPositionInsideNode(node: any): boolean {
-    const start = node.loc.start
-    const end = node.loc.end
+    let loc = node.loc
+    if (!loc) {
+      if (code === null) {
+        code = ast.toSource()
+      }
+      loc = getLoc(code, node.start, node.end)
+    }
+
+    const start = loc.start
+    const end = loc.end
 
     return (
       (start.line - 1 < position.line ||
