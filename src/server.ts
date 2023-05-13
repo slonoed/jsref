@@ -26,6 +26,7 @@ import PackagesLoader from './loaders/packages-loader'
 
 type Options = {
   folders: string[]
+  npmPath?: string
 }
 
 export default class Server {
@@ -56,7 +57,11 @@ export default class Server {
 
     const loaders: Loader[] = options.folders.map((f) => new FolderLoader(logger, f))
     loaders.push(new InternalLoader(logger))
-    loaders.push(new PackagesLoader(logger))
+
+    if (options.npmPath) {
+      logger.info(`Using custom npmPath: "${options.npmPath}"`)
+    }
+    loaders.push(new PackagesLoader(logger, options.npmPath ?? 'npm'))
 
     const store = new FixerStore(logger, loaders)
     // TODO use factory
@@ -84,8 +89,7 @@ export default class Server {
   }
 
   getInitializationData(params: InitializeParams): InitializeResult {
-    this.logger.info('on get options')
-    this.logger.info(params as any)
+    this.logger.log(params as any)
 
     return {
       capabilities: {
@@ -139,6 +143,7 @@ export default class Server {
  *
  */
 async function createOptions(params: InitializeParams): Promise<Options> {
+  console.log('PP', params)
   const input = params.initializationOptions
 
   const folders: string[] = []
@@ -157,7 +162,13 @@ async function createOptions(params: InitializeParams): Promise<Options> {
     }
   }
 
+  let npmPath = null
+  if (typeof input?.npmPath === 'string' && input?.npmPath) {
+    npmPath = input?.npmPath
+  }
+
   return {
     folders,
+    npmPath,
   }
 }

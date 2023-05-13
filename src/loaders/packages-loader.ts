@@ -9,15 +9,17 @@ function isFixerPackageName(name: string): boolean {
 
 export default class PackagesLoader {
   logger: Logger
+  npmPath: string
 
-  constructor(logger: Logger) {
+  constructor(logger: Logger, npmPath: string) {
     this.logger = logger
+    this.npmPath = npmPath
   }
 
   async load(): Promise<Fixer[]> {
     let packageNames: string[]
     try {
-      packageNames = await getInstalledPackages()
+      packageNames = await getInstalledPackages(this.npmPath)
     } catch (e) {
       this.logger.error(`Unable to get installed packages`)
       return []
@@ -35,7 +37,7 @@ export default class PackagesLoader {
 
     let result
     try {
-      result = await importGlobalPackage(packageName)
+      result = await importGlobalPackage(packageName, this.npmPath)
     } catch (e) {
       this.logger.warn(`unable to load package ${packageName}`, e)
       // We don't control packages. So, try not to throw when possible
