@@ -22,7 +22,7 @@ function execAsync(command: string): Promise<string> {
 async function getPackageList(command: string): Promise<string[]> {
   const stdout = await execAsync(command)
   const parsedOutput = JSON.parse(stdout)
-  const packageNames = Object.keys(parsedOutput.dependencies)
+  const packageNames = Object.keys(parsedOutput.dependencies || {})
 
   return packageNames
 }
