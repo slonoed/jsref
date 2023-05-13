@@ -8,7 +8,7 @@ function isJestFn(j: JSCodeshift, node: CallExpression) {
 }
 
 const fix: Fixer = {
-  id: 'jest-skip-test',
+  id: 'jest-only-test',
   fix: ({ j, api }) => {
     const node = api.closestNode(j.CallExpression, (n) => isJestFn(j, n))
 
@@ -18,12 +18,12 @@ const fix: Fixer = {
 
     const id = node.callee as Identifier
     const edit = () => {
-      const newNode = j.memberExpression(id, j.identifier('skip'))
+      const newNode = j.memberExpression(id, j.identifier('only'))
       return api.replaceNode(node.callee, newNode)
     }
 
     return {
-      title: `Use ${id.name}.skip`,
+      title: `Use ${id.name}.only`,
       edit,
     }
   },

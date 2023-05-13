@@ -19,6 +19,8 @@ export default class FixerStore {
 
     const promises = this.loaders.map((loader) => this.loadOne(loader))
     await Promise.all(promises)
+
+    this.logger.info('Fixers ready: \n' + [...this.getIds()].sort().join('\n'))
   }
 
   getIds() {
@@ -37,6 +39,9 @@ export default class FixerStore {
     try {
       const fixers = await loader.load()
       for (const fixer of fixers) {
+        if (this.fixers.has(fixer.id)) {
+          this.logger.warn(`There are multiple fixers with ID "${fixer.id}"`)
+        }
         this.fixers.set(fixer.id, fixer)
       }
     } catch (e) {
