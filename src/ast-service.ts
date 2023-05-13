@@ -4,12 +4,10 @@ import { Collection } from 'jscodeshift/src/Collection'
 import { TextDocument } from 'vscode-languageserver-textdocument'
 
 import { Logger } from './types'
-import tsReactParser from './parsers/ts-react-parser'
 import reactParser from './parsers/react-parser'
 
 const csTs = withParser('ts')
-const csBabylon = withParser('babylon')
-const csTsReact = withParser(tsReactParser)
+const csTsReact = withParser('tsx')
 const csReact = withParser(reactParser)
 
 const codeShifts: { [langId: string]: JSCodeshift } = {
@@ -56,9 +54,10 @@ export default class AstService {
       const ast = j(source)
       this.asts.set(uri, ast)
       return ast
-    } catch (e) {
+    } catch (e: any) {
+      console.error(e)
       // Source is broken. Always when user typing
-      this.logger.warn(`source is broken for ${uri}`)
+      this.logger.warn(`unable to parse "${uri}"; ${e.message}`)
       return null
     }
   }

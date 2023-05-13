@@ -1,5 +1,7 @@
 const a = styled('div')
 
 const Foo = () => {
-  return <CMp/>
+  return <Big>
+  <Small/>
+  </Big>
 }
