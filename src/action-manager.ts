@@ -66,7 +66,8 @@ export default class ActionManager {
           kind: CodeActionKind.RefactorRewrite,
           command: {
             title: fix.title,
-            command: id,
+            command: 'refactor',
+            arguments: [id],
           },
         })
       }
@@ -76,7 +77,29 @@ export default class ActionManager {
   }
 
   async createEdit(params: ExecuteCommandParams): Promise<ApplyWorkspaceEditParams | null> {
-    const payload = this.actions.get(params.command)
+    if (params.command !== 'refactor') {
+      this.logger.error(`incorrect command "${params.command}"`)
+      return null
+    }
+
+    if (!Array.isArray(params.arguments)) {
+      this.logger.error('params.arguments should be array')
+      return null
+    }
+
+    if (params.arguments.length !== 1) {
+      this.logger.error(`params.arguments should be of length 1 but got ${params.arguments.length}`)
+      return null
+    }
+
+    const id = params.arguments[0]
+
+    if (typeof id !== 'string' || id === '') {
+      this.logger.error(`id should be non-empty string, got: "${id}"`)
+      return null
+    }
+
+    const payload = this.actions.get(id)
     if (!payload) {
       return null
     }

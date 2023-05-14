@@ -67,8 +67,6 @@ export default class Server {
     // TODO use factory
     await store.init()
 
-    logger.info('Fixers ready: \n' + [...store.getIds()].sort().join('\n'))
-
     const astService = new AstService(logger, documents)
     const actionManager = new ActionManager(store, logger, astService)
 
@@ -96,7 +94,7 @@ export default class Server {
         textDocumentSync: TextDocumentSyncKind.Incremental,
         codeActionProvider: true,
         executeCommandProvider: {
-          commands: ['test'],
+          commands: ['refactor'],
         },
       },
     }
@@ -143,7 +141,6 @@ export default class Server {
  *
  */
 async function createOptions(params: InitializeParams): Promise<Options> {
-  console.log('PP', params)
   const input = params.initializationOptions
 
   const folders: string[] = []
